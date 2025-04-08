@@ -42,10 +42,10 @@ vim.cmd.colorscheme "solarized"
 
 vim.diagnostic.config({ virtual_text = true })
 vim.lsp.enable("luals")
--- vim.lsp.enable("pyright")
 vim.lsp.enable("pylsp")
 vim.lsp.enable("sparql")
 vim.lsp.enable("turtle")
+vim.lsp.enable("bicep")
 vim.api.nvim_create_autocmd('LspAttach', {
   callback = function(ev)
     local client = vim.lsp.get_client_by_id(ev.data.client_id)
