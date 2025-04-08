@@ -1,0 +1,59 @@
+vim.opt.undofile = true
+vim.opt.smartcase = true
+vim.opt.ignorecase = true
+vim.opt.number = true
+vim.opt.confirm = true
+vim.opt.laststatus = 0
+vim.opt.tabstop = 2
+vim.opt.shiftwidth = 2
+vim.opt.expandtab = true
+vim.opt.splitright = true
+vim.opt.splitbelow = true
+vim.opt.cursorline = true
+vim.opt.signcolumn = "yes"
+vim.opt.completeopt = { 'menu', 'menuone', 'noinsert' }
+vim.opt.modeline = false
+
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
+
+vim.keymap.set("n", "<leader>w", ":w<cr>")
+vim.keymap.set("n", "-", ":Explore<cr>")
+vim.keymap.set("n", "<leader>z", ":set wrap!<cr>")
+vim.keymap.set("n", "q", "<c-w>q")
+vim.keymap.set("n", "Q", "q")
+vim.keymap.set("t", "<esc>", "<c-\\><c-n>")
+vim.keymap.set("n", "<c-h>", "<c-w>h")
+vim.keymap.set("n", "<c-j>", "<c-w>j")
+vim.keymap.set("n", "<c-k>", "<c-w>k")
+vim.keymap.set("n", "<c-l>", "<c-w>l")
+vim.keymap.set("n", "<a-h>", "2<c-w>>")
+vim.keymap.set("n", "<a-j>", "2<c-w>-")
+vim.keymap.set("n", "<a-k>", "2<c-w>+")
+vim.keymap.set("n", "<a-l>", "2<c-w><")
+vim.keymap.set("n", "<esc>", ":nohlsearch<cr>")
+vim.keymap.set("n", "<a-a>", "ggvG")
+
+vim.g.netrw_banner = false
+vim.g.netrw_list_hide = "\\(^\\|\\s\\s\\)\\zs\\.\\S\\+"
+
+require("plugins")
+
+vim.cmd.colorscheme "solarized"
+
+vim.diagnostic.config({ virtual_text = true })
+vim.lsp.enable("luals")
+vim.lsp.enable("pyright")
+vim.lsp.enable("sparql")
+vim.lsp.enable("turtle")
+vim.api.nvim_create_autocmd('LspAttach', {
+  callback = function(ev)
+    local client = vim.lsp.get_client_by_id(ev.data.client_id)
+    if client then
+      vim.keymap.set("n", "grq", ":lua vim.diagnostic.setqflist()<cr>", { buffer = ev.buf })
+      if client:supports_method('textDocument/completion') then
+        vim.lsp.completion.enable(true, client.id, ev.buf, { autotrigger = true })
+      end
+    end
+  end,
+})
