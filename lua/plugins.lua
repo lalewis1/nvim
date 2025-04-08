@@ -63,7 +63,19 @@ require("lazy").setup({
         vim.o.foldmethod = 'expr'
         vim.o.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
         vim.o.foldlevel = 99
-      end
+        require("nvim-treesitter.configs").setup({
+          highlight = { enable = true },
+          indent = { enable = true },
+          incremental_selection = {
+            enable = true,
+            keymaps = {
+              init_selection = "<cr>",
+              node_incremental = "<cr>",
+              node_decremental = "<space>",
+            },
+          },
+        })
+      end,
     },
     { "kylechui/nvim-surround",          event = "VeryLazy", opts = {} },
     {
