@@ -65,7 +65,7 @@ require("lazy").setup({
         vim.o.foldlevel = 99
       end
     },
-    { "kylechui/nvim-surround", event = "VeryLazy", opts = {} },
+    { "kylechui/nvim-surround",          event = "VeryLazy", opts = {} },
     {
       "olimorris/codecompanion.nvim",
       config = true,
@@ -99,11 +99,25 @@ require("lazy").setup({
     {
       "ibhagwan/fzf-lua",
       keys = {
-        { "<a-f>", ":FzfLua files<cr>" },
-        { "<a-b>", ":FzfLua builtin<cr>" },
+        { "<a-f>",      ":FzfLua files<cr>" },
+        { "<a-b>",      ":FzfLua builtin<cr>" },
         { "<leader>fg", ":FzfLua grep_project<cr>" },
         { "<leader>fb", ":FzfLua buffers<cr>" },
       }
+    },
+    {
+      'saghen/blink.cmp',
+      dependencies = { 'rafamadriz/friendly-snippets' },
+      event = "VeryLazy",
+      version = '1.*',
+      opts = {
+        keymap = { preset = 'enter' },
+        completion = { documentation = { auto_show = true } },
+        sources = {
+          default = { 'lsp', 'path', 'snippets', 'buffer' },
+        },
+      },
+      opts_extend = { "sources.default" }
     },
   },
   install = { colorscheme = { "vim" } },

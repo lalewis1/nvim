@@ -1,7 +1,9 @@
 {
   "bigfile.nvim": { "branch": "main", "commit": "33eb067e3d7029ac77e081cfe7c45361887a311a" },
+  "blink.cmp": { "branch": "main", "commit": "cb5e346d9e0efa7a3eee7fd4da0b690c48d2a98e" },
   "codecompanion.nvim": { "branch": "main", "commit": "8e231abc2d2b27f848da970d370ba735e1d9f2c4" },
   "diffview.nvim": { "branch": "main", "commit": "4516612fe98ff56ae0415a259ff6361a89419b0a" },
+  "friendly-snippets": { "branch": "main", "commit": "efff286dd74c22f731cdec26a70b46e5b203c619" },
   "fzf-lua": { "branch": "main", "commit": "13ec251a963ed5645dc8ad49e0fde13dac42ec0f" },
   "kulala.nvim": { "branch": "main", "commit": "49e4d4d82210934801af3cfc170c964a126a62fc" },
   "lazy.nvim": { "branch": "main", "commit": "6c3bda4aca61a13a9c63f1c1d1b16b9d3be90d7a" },

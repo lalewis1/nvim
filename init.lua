@@ -10,9 +10,8 @@ vim.opt.expandtab = true
 vim.opt.splitright = true
 vim.opt.splitbelow = true
 vim.opt.cursorline = true
-vim.opt.signcolumn = "yes"
-vim.opt.completeopt = { 'menu', 'menuone', 'noinsert' }
 vim.opt.modeline = false
+vim.opt.signcolumn = "yes"
 
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
@@ -31,8 +30,8 @@ vim.keymap.set("n", "<a-h>", "2<c-w>>")
 vim.keymap.set("n", "<a-j>", "2<c-w>-")
 vim.keymap.set("n", "<a-k>", "2<c-w>+")
 vim.keymap.set("n", "<a-l>", "2<c-w><")
-vim.keymap.set("n", "<esc>", ":nohlsearch<cr>")
-vim.keymap.set("n", "<a-a>", "ggvG")
+vim.keymap.set("n", "<esc>", ":nohlsearch<cr>", { silent = true } )
+vim.keymap.set("n", "<a-a>", "ggVG")
 
 vim.g.netrw_banner = false
 vim.g.netrw_list_hide = "\\(^\\|\\s\\s\\)\\zs\\.\\S\\+"
@@ -43,7 +42,8 @@ vim.cmd.colorscheme "solarized"
 
 vim.diagnostic.config({ virtual_text = true })
 vim.lsp.enable("luals")
-vim.lsp.enable("pyright")
+-- vim.lsp.enable("pyright")
+vim.lsp.enable("pylsp")
 vim.lsp.enable("sparql")
 vim.lsp.enable("turtle")
 vim.api.nvim_create_autocmd('LspAttach', {
@@ -52,7 +52,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
     if client then
       vim.keymap.set("n", "grq", ":lua vim.diagnostic.setqflist()<cr>", { buffer = ev.buf })
       if client:supports_method('textDocument/completion') then
-        vim.lsp.completion.enable(true, client.id, ev.buf, { autotrigger = true })
+        vim.lsp.completion.enable(true, client.id, ev.buf, { autotrigger = false })
       end
     end
   end,
