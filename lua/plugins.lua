@@ -122,7 +122,7 @@ require("lazy").setup({
 			event = "VeryLazy",
 			version = "1.*",
 			opts = {
-				keymap = { preset = "enter" },
+				keymap = { preset = "default" },
 				completion = { documentation = { auto_show = true } },
 				sources = {
 					default = { "lsp", "path", "snippets", "buffer" },
@@ -141,13 +141,14 @@ require("lazy").setup({
 					},
 				},
 				formatters_by_ft = {
+					python = { "black", "isort" },
 					lua = { "stylua" },
 					markdown = { "prettier" },
 					bicep = { "bicep" },
 				},
 			},
 			keys = {
-				{ "<leader>fm", ":lua require('conform').format()<cr>" },
+				{ "<leader>fm", ":lua require('conform').format({ async = true })<cr>" },
 			},
 		},
 	},
