@@ -151,6 +151,13 @@ require("lazy").setup({
 				{ "<leader>fm", ":lua require('conform').format({ async = true })<cr>" },
 			},
 		},
+    {
+      'brianhuster/live-preview.nvim',
+      dependencies = { 'ibhagwan/fzf-lua' },
+      keys = {
+        { "<leader>lp", ":LivePreview start<cr>" }
+      }
+    }
 	},
 	install = { colorscheme = { "vim" } },
 })
