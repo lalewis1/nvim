@@ -114,6 +114,7 @@ require("lazy").setup({
 				{ "<a-b>", ":FzfLua builtin<cr>" },
 				{ "<leader>fg", ":FzfLua grep_project<cr>" },
 				{ "<leader>fb", ":FzfLua buffers<cr>" },
+				{ "<leader>fh", ":FzfLua helptags<cr>" },
 			},
 		},
 		{
@@ -123,6 +124,7 @@ require("lazy").setup({
 			version = "1.*",
 			opts = {
 				keymap = { preset = "default" },
+        cmdline = { enabled = false },
 				completion = { documentation = { auto_show = true } },
 				sources = {
 					default = { "lsp", "path", "snippets", "buffer" },
