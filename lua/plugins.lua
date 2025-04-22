@@ -26,7 +26,8 @@ require("lazy").setup({
 				{ "<F8>", ":lua require('dap').run_to_cursor()<cr>" },
 				{ "<F10>", ":lua require('dap').step_over()<cr>" },
 				{ "<F11>", ":lua require('dap').step_into()<cr>" },
-				{ "<F11>", ":lua require('dap').step_out()<cr>" },
+				{ "<F12>", ":lua require('dap').step_out()<cr>" },
+				{ "gdc", ":lua require('dap').clear_breakpoints()<cr>" },
 				{ "gdb", ":lua require('dap').toggle_breakpoint()<cr>" },
 				{ "gdB", ":lua require('dap').toggle_breakpoint(nil, vim.fn.input('condition: '))<cr>" },
 				{ "gdh", ":lua require('dap.ui.widgets').hover()<cr>" },
@@ -99,7 +100,13 @@ require("lazy").setup({
 				{ "<a-c>", "<esc>:CodeCompanion ", mode = "i" },
 			},
 		},
-		{ "mistweaverco/kulala.nvim", opts = {} },
+		{
+			"mistweaverco/kulala.nvim",
+			opts = {},
+			keys = {
+				{ "<a-k>", ":lua require('kulala').scratchpad()<cr>" },
+			},
+		},
 		{
 			"sindrets/diffview.nvim",
 			opts = { use_icons = false },
@@ -124,7 +131,7 @@ require("lazy").setup({
 			version = "1.*",
 			opts = {
 				keymap = { preset = "default" },
-        cmdline = { enabled = false },
+				cmdline = { enabled = false },
 				completion = { documentation = { auto_show = true } },
 				sources = {
 					default = { "lsp", "path", "snippets", "buffer" },
@@ -147,19 +154,20 @@ require("lazy").setup({
 					lua = { "stylua" },
 					markdown = { "prettier" },
 					bicep = { "bicep" },
+					sql = { "sqlfmt" },
 				},
 			},
 			keys = {
 				{ "<leader>fm", ":lua require('conform').format({ async = true })<cr>" },
 			},
 		},
-    {
-      'brianhuster/live-preview.nvim',
-      dependencies = { 'ibhagwan/fzf-lua' },
-      keys = {
-        { "<leader>lp", ":LivePreview start<cr>" }
-      }
-    }
+		{
+			"brianhuster/live-preview.nvim",
+			dependencies = { "ibhagwan/fzf-lua" },
+			keys = {
+				{ "<leader>lp", ":LivePreview start<cr>" },
+			},
+		},
 	},
 	install = { colorscheme = { "vim" } },
 })
