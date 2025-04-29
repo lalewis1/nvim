@@ -1,4 +1,4 @@
 return {
-  cmd = { "node", "/home/laws/.npm-packages/bin/turtle-language-server", "--stdio" },
+  cmd = { "node", "$HOME/.npm-packages/bin/turtle-language-server", "--stdio" },
   filetypes = { "turtle" },
 }
