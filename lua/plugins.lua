@@ -104,7 +104,7 @@ require("lazy").setup({
 			"mistweaverco/kulala.nvim",
 			opts = {},
 			keys = {
-				{ "<a-k>", ":lua require('kulala').scratchpad()<cr>" },
+				{ "<leader>k", ":lua require('kulala').scratchpad()<cr>" },
 			},
 		},
 		{

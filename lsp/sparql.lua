@@ -1,4 +1,4 @@
 return {
-  cmd = { "node", "/home/lawso/node_modules/bin/sparql-language-server", "--stdio" },
+  cmd = { "node", "$HOME/.npm-packages/bin/sparql-language-server", "--stdio" },
   filetypes = { "sparql" }
 }
