@@ -41,7 +41,7 @@ require("plugins")
 
 vim.cmd.colorscheme("solarized")
 
-vim.diagnostic.config({ virtual_text = true })
+vim.diagnostic.config({ virtual_text = true, signs = true })
 vim.lsp.enable("luals")
 vim.lsp.enable("pylsp")
 vim.lsp.enable("sparql")

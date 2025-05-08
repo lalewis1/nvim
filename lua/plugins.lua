@@ -102,7 +102,21 @@ require("lazy").setup({
 		},
 		{
 			"mistweaverco/kulala.nvim",
-			opts = {},
+			opts = {
+				contenttypes = {
+					["application/sparql-results+json"] = {
+						ft = "json",
+						formatter = vim.fn.executable("jq") == 1 and { "jq", "." },
+					},
+					["application/ld+json"] = {
+						ft = "json",
+						formatter = vim.fn.executable("jq") == 1 and { "jq", "." },
+					},
+					["text/turtle"] = {
+						ft = "turtle",
+					},
+				},
+			},
 			keys = {
 				{ "<leader>k", ":lua require('kulala').scratchpad()<cr>" },
 			},
@@ -151,10 +165,12 @@ require("lazy").setup({
 				},
 				formatters_by_ft = {
 					python = { "black", "isort" },
+					json = { "prettier" },
 					lua = { "stylua" },
 					markdown = { "prettier" },
 					bicep = { "bicep" },
 					sql = { "sqlfmt" },
+					typescript = { "prettier" },
 				},
 			},
 			keys = {
