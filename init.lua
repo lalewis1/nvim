@@ -31,8 +31,9 @@ vim.keymap.set("n", "<a-h>", "2<c-w><")
 vim.keymap.set("n", "<a-j>", "2<c-w>-")
 vim.keymap.set("n", "<a-k>", "2<c-w>+")
 vim.keymap.set("n", "<a-l>", "2<c-w>>")
-vim.keymap.set("n", "<esc>", ":nohlsearch<cr>", { silent = true } )
+vim.keymap.set("n", "<esc>", ":nohlsearch<cr>", { silent = true })
 vim.keymap.set("n", "<a-a>", "ggVG")
+vim.keymap.set("n", "<tab>", "<c-^>")
 
 vim.g.netrw_banner = false
 vim.g.netrw_list_hide = "\\(^\\|\\s\\s\\)\\zs\\.\\S\\+"
@@ -49,14 +50,14 @@ vim.lsp.enable("turtle")
 vim.lsp.enable("bicep")
 vim.lsp.enable("emmet")
 vim.lsp.enable("html")
-vim.api.nvim_create_autocmd('LspAttach', {
-  callback = function(ev)
-    local client = vim.lsp.get_client_by_id(ev.data.client_id)
-    if client then
-      vim.keymap.set("n", "grq", ":lua vim.diagnostic.setqflist()<cr>", { buffer = ev.buf })
-      if client:supports_method('textDocument/completion') then
-        vim.lsp.completion.enable(true, client.id, ev.buf, { autotrigger = false })
-      end
-    end
-  end,
+vim.api.nvim_create_autocmd("LspAttach", {
+	callback = function(ev)
+		local client = vim.lsp.get_client_by_id(ev.data.client_id)
+		if client then
+			vim.keymap.set("n", "grq", ":lua vim.diagnostic.setqflist()<cr>", { buffer = ev.buf })
+			if client:supports_method("textDocument/completion") then
+				vim.lsp.completion.enable(true, client.id, ev.buf, { autotrigger = false })
+			end
+		end
+	end,
 })

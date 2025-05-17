@@ -32,7 +32,7 @@ require("lazy").setup({
 				{ "gdB", ":lua require('dap').toggle_breakpoint(nil, vim.fn.input('condition: '))<cr>" },
 				{ "gdh", ":lua require('dap.ui.widgets').hover()<cr>" },
 				{ "gdr", ":lua require('dap').repl.open()<cr>" },
-				{ "gds", ":lua require('dap.ui.widgets').centered_float(require('dap.ui.widgets').scopes)<cr>" },
+				{ "gds", ":lua require('dap.ui.widgets').sidebar(require('dap.ui.widgets').scopes)<cr>" },
 			},
 		},
 		{
@@ -51,8 +51,8 @@ require("lazy").setup({
 				})
 			end,
 			keys = {
-				{ "gtn", ":lua require('dap-python').test_method()<cr>" },
-				{ "gtf", ":lua require('dap-python').test_class()<cr>" },
+				{ "gtm", ":lua require('dap-python').test_method()<cr>" },
+				{ "gtc", ":lua require('dap-python').test_class()<cr>" },
 				{ "gtd", ":lua require('dap-python').debug_selection()<cr>" },
 			},
 		},
@@ -165,12 +165,14 @@ require("lazy").setup({
 				},
 				formatters_by_ft = {
 					python = { "black", "isort" },
-					json = { "prettier" },
+					json = { "jq" },
 					lua = { "stylua" },
 					markdown = { "prettier" },
 					bicep = { "bicep" },
 					sql = { "sqlfmt" },
 					typescript = { "prettier" },
+					html = { "prettier" },
+					javascript = { "prettier" },
 				},
 			},
 			keys = {
