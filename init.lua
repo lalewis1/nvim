@@ -34,6 +34,17 @@ vim.keymap.set("n", "<a-l>", "2<c-w>>")
 vim.keymap.set("n", "<esc>", ":nohlsearch<cr>", { silent = true })
 vim.keymap.set("n", "<a-a>", "ggVG")
 vim.keymap.set("n", "<tab>", "<c-^>")
+vim.keymap.set("n", "<leader>px", function()
+	local input = vim.fn.input({ prompt = "prefix: " })
+	if input then
+		local cmdstr = string.format(
+			"r! curl --silent https://kurrawong.github.io/semantic-background/ns/%s.file.json | jq -r '.%s'",
+			input,
+			input
+		)
+		vim.cmd(cmdstr)
+	end
+end, { desc = "semantic background prefix lookup" })
 
 vim.g.netrw_banner = false
 vim.g.netrw_list_hide = "\\(^\\|\\s\\s\\)\\zs\\.\\S\\+"

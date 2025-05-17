@@ -27,12 +27,13 @@ require("lazy").setup({
 				{ "<F10>", ":lua require('dap').step_over()<cr>" },
 				{ "<F11>", ":lua require('dap').step_into()<cr>" },
 				{ "<F12>", ":lua require('dap').step_out()<cr>" },
+				{ "gdl", ":lua require('dap').list_breakpoints()<cr>:copen<cr>" },
 				{ "gdc", ":lua require('dap').clear_breakpoints()<cr>" },
 				{ "gdb", ":lua require('dap').toggle_breakpoint()<cr>" },
 				{ "gdB", ":lua require('dap').toggle_breakpoint(nil, vim.fn.input('condition: '))<cr>" },
 				{ "gdh", ":lua require('dap.ui.widgets').hover()<cr>" },
 				{ "gdr", ":lua require('dap').repl.open()<cr>" },
-				{ "gds", ":lua require('dap.ui.widgets').sidebar(require('dap.ui.widgets').scopes)<cr>" },
+				{ "gds", ":lua require('dap.ui.widgets').centered_float(require('dap.ui.widgets').scopes)<cr>" },
 			},
 		},
 		{
@@ -56,7 +57,12 @@ require("lazy").setup({
 				{ "gtd", ":lua require('dap-python').debug_selection()<cr>" },
 			},
 		},
-		{ "theHamsta/nvim-dap-virtual-text", event = "VeryLazy", opts = {} },
+		{
+			"theHamsta/nvim-dap-virtual-text",
+			event = "VeryLazy",
+			opts = {},
+			keys = { { "gdv", ":DapVirtualTextToggle<cr>" } },
+		},
 		{
 			"nvim-treesitter/nvim-treesitter",
 			config = function()
