@@ -1,5 +1,6 @@
 return {
 	cmd = { "emmet-ls", "--stdio" },
+	root_markers = { ".git" },
 	filetypes = {
 		"astro",
 		"css",

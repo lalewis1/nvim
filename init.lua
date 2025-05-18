@@ -56,16 +56,19 @@ vim.cmd.colorscheme("solarized")
 vim.diagnostic.config({ virtual_text = true, signs = true })
 vim.lsp.enable("luals")
 vim.lsp.enable("pylsp")
+vim.lsp.enable("ruff")
 vim.lsp.enable("sparql")
 vim.lsp.enable("turtle")
 vim.lsp.enable("bicep")
 vim.lsp.enable("emmet")
 vim.lsp.enable("html")
+vim.lsp.enable("volar")
+vim.lsp.enable("ts_ls")
 vim.api.nvim_create_autocmd("LspAttach", {
 	callback = function(ev)
 		local client = vim.lsp.get_client_by_id(ev.data.client_id)
 		if client then
-			vim.keymap.set("n", "grq", ":lua vim.diagnostic.setqflist()<cr>", { buffer = ev.buf })
+			vim.keymap.set("n", "grq", ":lua vim.diagnostic.setqflist()<cr>:copen<cr>", { buffer = ev.buf })
 			if client:supports_method("textDocument/completion") then
 				vim.lsp.completion.enable(true, client.id, ev.buf, { autotrigger = false })
 			end
