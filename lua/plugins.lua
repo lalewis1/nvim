@@ -111,6 +111,9 @@ require("lazy").setup({
 			"mistweaverco/kulala.nvim",
 			opts = {
 				contenttypes = {
+					["application/sparql-query"] = {
+						ft = "sparql",
+					},
 					["application/sparql-results+json"] = {
 						ft = "json",
 						formatter = vim.fn.executable("jq") == 1 and { "jq", "." },
@@ -121,6 +124,9 @@ require("lazy").setup({
 					},
 					["text/turtle"] = {
 						ft = "turtle",
+					},
+					["text/csv"] = {
+						ft = "csv",
 					},
 				},
 			},
@@ -169,6 +175,11 @@ require("lazy").setup({
 						args = { "bicep", "format", "-f", "$FILENAME" },
 						stdin = false,
 					},
+					sparql_fmt = {
+						command = "sparql_fmt",
+						args = { "$FILENAME" },
+						stdin = false,
+					},
 				},
 				formatters_by_ft = {
 					python = { "black", "isort" },
@@ -180,7 +191,8 @@ require("lazy").setup({
 					typescript = { "prettier" },
 					html = { "prettier" },
 					javascript = { "prettier" },
-          vue = { "prettier" },
+					vue = { "prettier" },
+					sparql = { "sparql_fmt" },
 				},
 			},
 			keys = {
