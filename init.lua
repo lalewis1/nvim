@@ -53,7 +53,7 @@ require("plugins")
 
 vim.cmd.colorscheme("solarized")
 
-vim.diagnostic.config({ virtual_text = true, signs = true })
+vim.diagnostic.config({ virtual_text = true })
 vim.lsp.enable("luals")
 vim.lsp.enable("pylsp")
 vim.lsp.enable("ruff")
@@ -62,6 +62,7 @@ vim.lsp.enable("turtle")
 vim.lsp.enable("bicep")
 vim.lsp.enable("emmet")
 vim.lsp.enable("html")
+vim.lsp.enable("json")
 vim.lsp.enable("volar")
 vim.lsp.enable("ts_ls")
 vim.api.nvim_create_autocmd("LspAttach", {
@@ -77,7 +78,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 })
 
 vim.filetype.add({
-  extension = {
-    ['ttl'] = 'turtle',
-  },
+	extension = {
+		["ttl"] = "turtle",
+	},
 })
