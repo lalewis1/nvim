@@ -135,13 +135,6 @@ require("lazy").setup({
 			},
 		},
 		{
-			"sindrets/diffview.nvim",
-			opts = { use_icons = false },
-			keys = {
-				{ "<a-d>", ":DiffviewFileHistory %<cr>" },
-			},
-		},
-		{
 			"ibhagwan/fzf-lua",
 			keys = {
 				{ "<a-f>", ":FzfLua files<cr>" },

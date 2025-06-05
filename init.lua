@@ -2,6 +2,7 @@ vim.opt.undofile = true
 vim.opt.smartcase = true
 vim.opt.ignorecase = true
 vim.opt.number = true
+vim.opt.wrap = false
 vim.opt.confirm = true
 vim.opt.laststatus = 3
 vim.opt.tabstop = 2
@@ -22,18 +23,16 @@ vim.keymap.set("n", "-", ":Explore<cr>")
 vim.keymap.set("n", "<leader>z", ":set wrap!<cr>")
 vim.keymap.set("n", "q", "<c-w>q")
 vim.keymap.set("n", "Q", "q")
-vim.keymap.set("t", "<esc>", "<c-\\><c-n>")
-vim.keymap.set("n", "<c-h>", "<c-w>h")
-vim.keymap.set("n", "<c-j>", "<c-w>j")
-vim.keymap.set("n", "<c-k>", "<c-w>k")
-vim.keymap.set("n", "<c-l>", "<c-w>l")
 vim.keymap.set("n", "<a-h>", "2<c-w><")
 vim.keymap.set("n", "<a-j>", "2<c-w>-")
 vim.keymap.set("n", "<a-k>", "2<c-w>+")
 vim.keymap.set("n", "<a-l>", "2<c-w>>")
 vim.keymap.set("n", "<esc>", ":nohlsearch<cr>", { silent = true })
 vim.keymap.set("n", "<a-a>", "ggVG")
-vim.keymap.set("n", "<tab>", "<c-^>")
+vim.keymap.set("n", "<a-g>", ":term lazygit<cr>i", { desc = "lazygit" })
+vim.keymap.set("n", "<a-p>", ":term python<cr>i", { desc = "python repl" })
+vim.keymap.set("n", "<a-s>", ":term ddgr<cr>", { desc = "duck duck go" })
+vim.keymap.set("v", "<a-s>", "\"vy:term ddgr <c-r>v<cr>", { desc = "duck duck go" })
 vim.keymap.set("n", "<leader>px", function()
 	local input = vim.fn.input({ prompt = "prefix: " })
 	if input then
