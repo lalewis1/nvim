@@ -109,6 +109,7 @@ require("lazy").setup({
 		},
 		{
 			"mistweaverco/kulala.nvim",
+			ft = { "http" },
 			opts = {
 				contenttypes = {
 					["application/sparql-query"] = {
@@ -195,6 +196,7 @@ require("lazy").setup({
 		{
 			"brianhuster/live-preview.nvim",
 			dependencies = { "ibhagwan/fzf-lua" },
+			ft = { "markdown" },
 			keys = {
 				{ "<leader>lp", ":LivePreview start<cr>" },
 			},
