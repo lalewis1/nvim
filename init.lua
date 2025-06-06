@@ -14,10 +14,12 @@ vim.opt.cursorline = true
 vim.opt.modeline = false
 vim.opt.signcolumn = "yes"
 vim.opt.wildignorecase = true
-vim.opt.scrolloff = 3
+vim.opt.scrolloff = 2
 
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
+vim.g.netrw_banner = false
+vim.g.netrw_list_hide = "\\(^\\|\\s\\s\\)\\zs\\.\\S\\+"
 
 vim.keymap.set("n", "<leader>w", ":w<cr>")
 vim.keymap.set("n", "-", ":Explore<cr>")
@@ -30,25 +32,15 @@ vim.keymap.set("n", "<a-k>", "2<c-w>+")
 vim.keymap.set("n", "<a-l>", "2<c-w>>")
 vim.keymap.set("n", "<esc>", ":nohlsearch<cr>", { silent = true })
 vim.keymap.set("n", "<a-a>", "ggVG")
-vim.keymap.set("t", "<c-j>", "<c-\\><c-n>", { desc = "exit terminal mode" })
+vim.keymap.set("t", "<esc>", "<c-\\><c-n>", { desc = "exit terminal mode" })
+vim.keymap.set("n", "<c-h>", "<c-w>h")
+vim.keymap.set("n", "<c-j>", "<c-w>j")
+vim.keymap.set("n", "<c-k>", "<c-w>k")
+vim.keymap.set("n", "<c-l>", "<c-w>l")
 vim.keymap.set("n", "<a-t>", ":belowright term<cr>i", { desc = "terminal" })
 vim.keymap.set("n", "<a-p>", ":term python<cr>i", { desc = "python repl" })
-vim.keymap.set("n", "<a-s>", ":term ddgr<cr>", { desc = "duck duck go" })
-vim.keymap.set("v", "<a-s>", "\"vy:term ddgr <c-r>v<cr>", { desc = "duck duck go" })
-vim.keymap.set("n", "<leader>px", function()
-	local input = vim.fn.input({ prompt = "prefix: " })
-	if input then
-		local cmdstr = string.format(
-			"r! curl --silent https://kurrawong.github.io/semantic-background/ns/%s.file.json | jq -r '.%s'",
-			input,
-			input
-		)
-		vim.cmd(cmdstr)
-	end
-end, { desc = "semantic background prefix lookup" })
-
-vim.g.netrw_banner = false
-vim.g.netrw_list_hide = "\\(^\\|\\s\\s\\)\\zs\\.\\S\\+"
+vim.keymap.set("n", "<a-s>", ":term ddgr<cr>i", { desc = "duck duck go" })
+vim.keymap.set("v", "<a-s>", '"vy:term ddgr <c-r>v<cr>', { desc = "duck duck go" })
 
 require("plugins")
 
