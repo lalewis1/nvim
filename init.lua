@@ -14,6 +14,7 @@ vim.opt.cursorline = true
 vim.opt.modeline = false
 vim.opt.signcolumn = "yes"
 vim.opt.wildignorecase = true
+vim.opt.scrolloff = 3
 
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
@@ -29,7 +30,8 @@ vim.keymap.set("n", "<a-k>", "2<c-w>+")
 vim.keymap.set("n", "<a-l>", "2<c-w>>")
 vim.keymap.set("n", "<esc>", ":nohlsearch<cr>", { silent = true })
 vim.keymap.set("n", "<a-a>", "ggVG")
-vim.keymap.set("n", "<a-g>", ":term lazygit<cr>i", { desc = "lazygit" })
+vim.keymap.set("t", "<c-j>", "<c-\\><c-n>", { desc = "exit terminal mode" })
+vim.keymap.set("n", "<a-t>", ":belowright term<cr>i", { desc = "terminal" })
 vim.keymap.set("n", "<a-p>", ":term python<cr>i", { desc = "python repl" })
 vim.keymap.set("n", "<a-s>", ":term ddgr<cr>", { desc = "duck duck go" })
 vim.keymap.set("v", "<a-s>", "\"vy:term ddgr <c-r>v<cr>", { desc = "duck duck go" })
