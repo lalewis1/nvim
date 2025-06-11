@@ -151,7 +151,7 @@ require("lazy").setup({
 			event = "VeryLazy",
 			version = "1.*",
 			opts = {
-				keymap = { preset = "default" },
+				keymap = { preset = "super-tab" },
 				cmdline = { enabled = false },
 				completion = { documentation = { auto_show = true } },
 				sources = {
@@ -223,6 +223,20 @@ require("lazy").setup({
 			},
 			keys = {
 				{ "<a-g>", ":Neogit<cr>" },
+			},
+		},
+		{
+			"stevearc/oil.nvim",
+			opts = {},
+			keys = {
+				{ "-", ":Oil<cr>" },
+			},
+		},
+		{
+			"MagicDuck/grug-far.nvim",
+			opts = {},
+			keys = {
+				{ "<a-r>", ":GrugFar<cr>" },
 			},
 		},
 	},
