@@ -24,6 +24,7 @@ require("lazy").setup({
 				{ "<F5>", ":lua require('dap').continue()<cr>" },
 				{ "<F6>", ":lua require('dap').run_last()<cr>" },
 				{ "<F7>", ":lua require('dap').terminate()<cr>" },
+				{ "<F8>", ":lua require('dap').restart()<cr>" },
 				{ "<F9>", ":lua require('dap').run_to_cursor()<cr>" },
 				{ "<F10>", ":lua require('dap').step_over()<cr>" },
 				{ "<F11>", ":lua require('dap').step_into()<cr>" },
