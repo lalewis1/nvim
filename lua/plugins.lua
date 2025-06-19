@@ -37,6 +37,9 @@ require("lazy").setup({
 				{ "gdr", ":lua require('dap').repl.open()<cr>" },
 				{ "gds", ":lua require('dap.ui.widgets').centered_float(require('dap.ui.widgets').scopes)<cr>" },
 			},
+			config = function()
+				vim.g.switchbuf = "usevisible,usetab,uselast"
+			end,
 		},
 		{
 			"mfussenegger/nvim-dap-python",
@@ -48,7 +51,7 @@ require("lazy").setup({
 					type = "python",
 					request = "launch",
 					name = "jinja and allcode",
-					program = "${file}",
+					program = "${command:pickFile}",
 					jinja = true,
 					justMyCode = false,
 				})
@@ -145,6 +148,10 @@ require("lazy").setup({
 				{ "<leader>fb", ":FzfLua buffers<cr>" },
 				{ "<leader>fh", ":FzfLua helptags<cr>" },
 			},
+			config = function()
+				local fzflua = require("fzf-lua")
+				fzflua.register_ui_select()
+			end,
 		},
 		{
 			"saghen/blink.cmp",
