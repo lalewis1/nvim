@@ -141,6 +141,7 @@ require("lazy").setup({
 		},
 		{
 			"ibhagwan/fzf-lua",
+      event = "VeryLazy",
 			keys = {
 				{ "<a-f>", ":FzfLua files<cr>" },
 				{ "<a-b>", ":FzfLua builtin<cr>" },
