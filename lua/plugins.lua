@@ -20,6 +20,7 @@ require("lazy").setup({
 		{ "LunarVim/bigfile.nvim" },
 		{
 			"mfussenegger/nvim-dap",
+			event = "VeryLazy",
 			keys = {
 				{ "<F5>", ":lua require('dap').continue()<cr>" },
 				{ "<F6>", ":lua require('dap').run_last()<cr>" },
@@ -39,6 +40,14 @@ require("lazy").setup({
 			},
 			config = function()
 				vim.g.switchbuf = "usevisible,usetab,uselast"
+				vim.api.nvim_create_autocmd("FileType", {
+					pattern = "dap-repl",
+					callback = function()
+						require("dap.ext.autocompl").attach()
+					end,
+				})
+				local dap = require("dap")
+				dap.defaults.fallback.terminal_win_cmd = "10split new"
 			end,
 		},
 		{
