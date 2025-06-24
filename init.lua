@@ -20,6 +20,7 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 vim.g.netrw_banner = false
 vim.g.netrw_list_hide = "\\(^\\|\\s\\s\\)\\zs\\.\\S\\+"
+vim.g.netrw_sizestyle = "H"
 
 vim.keymap.set("n", "<leader>w", ":w<cr>")
 vim.keymap.set("n", "<leader>z", ":set wrap!<cr>")
