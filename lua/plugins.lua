@@ -141,7 +141,7 @@ require("lazy").setup({
 		},
 		{
 			"ibhagwan/fzf-lua",
-			event = "VeryLazy",
+      event = "VeryLazy",
 			keys = {
 				{ "<a-f>", ":FzfLua files<cr>" },
 				{ "<a-b>", ":FzfLua builtin<cr>" },
@@ -208,6 +208,44 @@ require("lazy").setup({
 			ft = { "markdown" },
 			keys = {
 				{ "<leader>lp", ":LivePreview start<cr>" },
+			},
+		},
+		{
+			"sindrets/diffview.nvim",
+			setup = function()
+				vim.opt.fillchars:append({ diff = "╱" })
+			end,
+			opts = {
+				use_icons = false,
+				enhanced_diff_hl = true,
+			},
+			keys = {
+				{ "<a-d>", ":DiffviewOpen<cr>" },
+				{ "<leader>df", ":DiffviewFileHistory %<cr>" },
+			},
+		},
+		{
+			"NeogitOrg/neogit",
+			dependencies = {
+				"nvim-lua/plenary.nvim",
+				"ibhagwan/fzf-lua",
+			},
+			keys = {
+				{ "<a-g>", ":Neogit<cr>" },
+			},
+		},
+		{
+			"stevearc/oil.nvim",
+			opts = {},
+			keys = {
+				{ "-", ":Oil<cr>" },
+			},
+		},
+		{
+			"MagicDuck/grug-far.nvim",
+			opts = {},
+			keys = {
+				{ "<a-r>", ":GrugFar<cr>" },
 			},
 		},
 	},
