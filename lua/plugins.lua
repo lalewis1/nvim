@@ -150,7 +150,7 @@ require("lazy").setup({
 		},
 		{
 			"ibhagwan/fzf-lua",
-      event = "VeryLazy",
+			event = "VeryLazy",
 			keys = {
 				{ "<a-f>", ":FzfLua files<cr>" },
 				{ "<a-b>", ":FzfLua builtin<cr>" },
@@ -245,7 +245,18 @@ require("lazy").setup({
 		},
 		{
 			"stevearc/oil.nvim",
-			opts = {},
+			event = "VimEnter",
+			opts = {
+				default_file_explorer = true,
+				keymaps = {
+					["gs"] = function()
+						require("oil").set_columns({ "mtime", "permissions", "size" })
+					end,
+					["gh"] = function()
+						require("oil").set_columns({})
+					end,
+				},
+			},
 			keys = {
 				{ "-", ":Oil<cr>" },
 			},
