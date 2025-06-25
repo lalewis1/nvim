@@ -36,7 +36,7 @@ require("lazy").setup({
 				{ "gdB", ":lua require('dap').toggle_breakpoint(nil, vim.fn.input('condition: '))<cr>" },
 				{ "gdh", ":lua require('dap.ui.widgets').hover()<cr>" },
 				{ "gdr", ":lua require('dap').repl.open()<cr>" },
-				{ "gds", ":lua require('dap.ui.widgets').centered_float(require('dap.ui.widgets').scopes)<cr>" },
+				{ "gds", ":lua require('dap.ui.widgets').sidebar(require('dap.ui.widgets').scopes, {width = 65}, 'vsplit').open()<cr>" },
 			},
 			config = function()
 				vim.g.switchbuf = "usevisible,usetab,uselast"
@@ -157,6 +157,7 @@ require("lazy").setup({
 				{ "<leader>fg", ":FzfLua grep_project<cr>" },
 				{ "<leader>fb", ":FzfLua buffers<cr>" },
 				{ "<leader>fh", ":FzfLua helptags<cr>" },
+				{ "<leader>fc", ":FzfLua colorschemes<cr>" },
 			},
 			config = function()
 				local fzflua = require("fzf-lua")
