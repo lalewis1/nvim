@@ -1,16 +1,8 @@
-local capabilities = require('blink.cmp').get_lsp_capabilities()
+local capabilities = require("blink.cmp").get_lsp_capabilities()
 return {
 	cmd = { "typescript-language-server", "--stdio" },
-  capabilities = capabilities,
-	filetypes = {
-		"javascript",
-		"javascriptreact",
-		"javascript.jsx",
-		"typescript",
-		"typescriptreact",
-		"typescript.tsx",
-		"vue",
-	},
+	capabilities = capabilities,
+	filetypes = { "javascript", "typescript", "vue" },
 	root_markers = { "tsconfig.json", "jsconfig.json", "package.json", ".git" },
 	init_options = {
 		hostInfo = "neovim",
@@ -18,38 +10,8 @@ return {
 			{
 				name = "@vue/typescript-plugin",
 				location = "/home/lawso/node_modules/lib/@vue/typescript-plugin",
-				languages = { "javascript", "typescript", "vue" },
+				languages = { "vue" },
 			},
 		},
 	},
-	handlers = {
-		-- handle rename request for certain code actions like extracting functions / types
-		["_typescript.rename"] = function(_, result, ctx)
-			local client = assert(vim.lsp.get_client_by_id(ctx.client_id))
-			vim.lsp.util.show_document({
-				uri = result.textDocument.uri,
-				range = {
-					start = result.position,
-					["end"] = result.position,
-				},
-			}, client.offset_encoding)
-			vim.lsp.buf.rename()
-			return vim.NIL
-		end,
-	},
-	on_attach = function(client)
-		-- ts_ls provides `source.*` code actions that apply to the whole file. These only appear in
-		-- `vim.lsp.buf.code_action()` if specified in `context.only`.
-		vim.api.nvim_buf_create_user_command(0, "LspTypescriptSourceAction", function()
-			local source_actions = vim.tbl_filter(function(action)
-				return vim.startswith(action, "source.")
-			end, client.server_capabilities.codeActionProvider.codeActionKinds)
-
-			vim.lsp.buf.code_action({
-				context = {
-					only = source_actions,
-				},
-			})
-		end, {})
-	end,
 }
