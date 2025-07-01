@@ -34,19 +34,17 @@ require("lazy").setup({
 				{ "gdc", ":lua require('dap').clear_breakpoints()<cr>" },
 				{ "gdb", ":lua require('dap').toggle_breakpoint()<cr>" },
 				{ "gdB", ":lua require('dap').toggle_breakpoint(nil, vim.fn.input('condition: '))<cr>" },
+				{ "gdL", ":lua require('dap').toggle_breakpoint(nil, nil, vim.fn.input('logpoint message: '))<cr>" },
 				{ "gdh", ":lua require('dap.ui.widgets').hover()<cr>" },
 				{ "gdr", ":lua require('dap').repl.open()<cr>" },
-				{ "gds", ":lua require('dap.ui.widgets').sidebar(require('dap.ui.widgets').scopes, {width = 65}, 'vsplit').open()<cr>" },
+				{
+					"gds",
+					":lua require('dap.ui.widgets').sidebar(require('dap.ui.widgets').scopes, {width = 65}, 'vsplit').open()<cr>",
+				},
 			},
 			config = function()
-				vim.g.switchbuf = "usevisible,usetab,uselast"
-				vim.api.nvim_create_autocmd("FileType", {
-					pattern = "dap-repl",
-					callback = function()
-						require("dap.ext.autocompl").attach()
-					end,
-				})
 				local dap = require("dap")
+				dap.defaults.fallback.switchbuf = "usevisible,usetab,uselast"
 				dap.defaults.fallback.terminal_win_cmd = "10split new"
 			end,
 		},
@@ -242,6 +240,11 @@ require("lazy").setup({
 			},
 			keys = {
 				{ "<a-g>", ":Neogit<cr>" },
+			},
+			opts = {
+				commit_editor = {
+					show_staged_diff = false,
+				},
 			},
 		},
 		{
