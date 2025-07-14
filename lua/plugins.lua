@@ -265,13 +265,6 @@ require("lazy").setup({
 				{ "-", ":Oil<cr>" },
 			},
 		},
-		{
-			"MagicDuck/grug-far.nvim",
-			opts = {},
-			keys = {
-				{ "<a-r>", ":GrugFar<cr>" },
-			},
-		},
 	},
 	install = { colorscheme = { "vim" } },
 })
