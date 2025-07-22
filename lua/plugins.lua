@@ -204,6 +204,7 @@ require("lazy").setup({
 					javascript = { "prettier" },
 					vue = { "prettier" },
 					sparql = { "sparql_fmt" },
+					sh = { "shfmt" },
 				},
 			},
 			keys = {
