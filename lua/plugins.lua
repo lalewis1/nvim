@@ -17,6 +17,16 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
 	spec = {
 		{ "maxmx03/solarized.nvim" },
+		{
+			"navarasu/onedark.nvim",
+			priority = 1000,
+			config = function()
+				require("onedark").setup({
+					style = "dark",
+				})
+				require("onedark").load()
+			end,
+		},
 		{ "LunarVim/bigfile.nvim" },
 		{
 			"mfussenegger/nvim-dap",
