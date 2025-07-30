@@ -230,35 +230,6 @@ require("lazy").setup({
 			},
 		},
 		{
-			"sindrets/diffview.nvim",
-			setup = function()
-				vim.opt.fillchars:append({ diff = "╱" })
-			end,
-			opts = {
-				use_icons = false,
-				enhanced_diff_hl = true,
-			},
-			keys = {
-				{ "<a-d>", ":DiffviewOpen<cr>" },
-				{ "<leader>df", ":DiffviewFileHistory %<cr>" },
-			},
-		},
-		{
-			"NeogitOrg/neogit",
-			dependencies = {
-				"nvim-lua/plenary.nvim",
-				"ibhagwan/fzf-lua",
-			},
-			keys = {
-				{ "<a-g>", ":Neogit<cr>" },
-			},
-			opts = {
-				commit_editor = {
-					show_staged_diff = false,
-				},
-			},
-		},
-		{
 			"stevearc/oil.nvim",
 			event = "VimEnter",
 			opts = {
