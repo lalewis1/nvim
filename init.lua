@@ -43,6 +43,7 @@ vim.keymap.set("n", "<a-s>", ":tabnew | term ddgr<cr>i", { desc = "duck duck go"
 vim.keymap.set("v", "<a-s>", '"vy:tabnew | term ddgr <c-r>v<cr>', { desc = "duck duck go" })
 
 require("plugins")
+require("functions")
 
 vim.cmd.colorscheme("onedark")
 
@@ -59,7 +60,6 @@ vim.lsp.enable("json")
 vim.lsp.enable("volar")
 vim.lsp.enable("ts_ls")
 vim.lsp.enable("bashls")
-vim.lsp.enable("azure_pipelines_ls")
 vim.lsp.enable("gh_actions_ls")
 vim.api.nvim_create_autocmd("LspAttach", {
 	callback = function(ev)
