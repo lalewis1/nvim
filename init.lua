@@ -75,6 +75,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 vim.filetype.add({
 	extension = {
+    ["trig"] = "trig",
 		["ttl"] = "turtle",
     ["conf"] = "nginx",
 	},
