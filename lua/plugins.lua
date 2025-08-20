@@ -246,7 +246,7 @@ require("lazy").setup({
 			keys = {
 				{ "-", ":Oil<cr>" },
 			},
-		},
+		}
 	},
-	install = { colorscheme = { "vim" } },
+	install = { colorscheme = { "habamax" } },
 })
