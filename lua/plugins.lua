@@ -161,6 +161,7 @@ require("lazy").setup({
 			event = "VeryLazy",
 			keys = {
 				{ "<a-f>", ":FzfLua files<cr>" },
+				{ "<a-F>", ":FzfLua resume<cr>" },
 				{ "<a-b>", ":FzfLua builtin<cr>" },
 				{ "<leader>fg", ":FzfLua grep_project<cr>" },
 				{ "<leader>fb", ":FzfLua buffers<cr>" },
