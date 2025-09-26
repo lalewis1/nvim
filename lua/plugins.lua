@@ -62,7 +62,7 @@ require("lazy").setup({
 			"mfussenegger/nvim-dap-python",
 			lazy = false,
 			config = function()
-				require("dap-python").setup("~/.local/share/pipx/venvs/debugpy/bin/python")
+				require("dap-python").setup("~/.local/share/uv/tools/debugpy/bin/python")
 				require("dap-python").test_runner = "pytest"
 				table.insert(require("dap").configurations.python, {
 					type = "python",
@@ -76,7 +76,31 @@ require("lazy").setup({
 			keys = {
 				{ "gtm", ":lua require('dap-python').test_method()<cr>" },
 				{ "gtc", ":lua require('dap-python').test_class()<cr>" },
-				{ "gtd", ":lua require('dap-python').debug_selection()<cr>" },
+				{ "gds", ":lua require('dap-python').debug_selection()<cr>" },
+			},
+		},
+		{
+			"nvim-neotest/neotest",
+			dependencies = {
+				"nvim-neotest/nvim-nio",
+				"nvim-lua/plenary.nvim",
+				"antoinemadec/FixCursorHold.nvim",
+				"nvim-treesitter/nvim-treesitter",
+				"nvim-neotest/neotest-python",
+			},
+      config = function()
+        require("neotest").setup({
+          adapters = {
+            require("neotest-python"),
+          }
+        })
+      end,
+			keys = {
+				{ "gtn", ":lua require('neotest').run.run()<cr>" },
+				{ "gtd", ":lua require('neotest').run.run({strategy = 'dap'})<cr>" },
+				{ "gta", ":lua require('neotest').run.run(vim.fn.expand('%'))<cr>" },
+				{ "gts", ":lua require('neotest').summary.toggle()<cr>" },
+				{ "gto", ":lua require('neotest').output_panel.toggle()<cr>" },
 			},
 		},
 		{
@@ -247,7 +271,7 @@ require("lazy").setup({
 			keys = {
 				{ "-", ":Oil<cr>" },
 			},
-		}
+		},
 	},
 	install = { colorscheme = { "habamax" } },
 })
