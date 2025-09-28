@@ -41,7 +41,6 @@ vim.keymap.set("n", "<a-t>", ":belowright 12split | term<cr>i", { desc = "termin
 vim.keymap.set("n", "<a-p>", ":tabnew | term python<cr>i", { desc = "python repl" })
 vim.keymap.set("n", "<a-s>", ":tabnew | term ddgr<cr>i", { desc = "duck duck go" })
 vim.keymap.set("v", "<a-s>", '"vy:tabnew | term ddgr <c-r>v<cr>', { desc = "duck duck go" })
-vim.keymap.set("n", "<a-r>", ":%s/", { desc = "find & replace" })
 
 require("plugins")
 require("functions")

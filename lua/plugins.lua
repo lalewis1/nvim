@@ -46,7 +46,7 @@ require("lazy").setup({
 				{ "gdB", ":lua require('dap').toggle_breakpoint(nil, vim.fn.input('condition: '))<cr>" },
 				{ "gdL", ":lua require('dap').toggle_breakpoint(nil, nil, vim.fn.input('logpoint message: '))<cr>" },
 				{ "gdh", ":lua require('dap.ui.widgets').hover()<cr>" },
-				{ "gdr", ":lua require('dap').repl.open()<cr>" },
+				{ "<a-r>", ":lua require('dap').repl.toggle()<cr>" },
 				{
 					"gds",
 					":lua require('dap.ui.widgets').sidebar(require('dap.ui.widgets').scopes, {width = 65}, 'vsplit').open()<cr>",
