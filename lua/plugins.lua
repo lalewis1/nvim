@@ -88,13 +88,13 @@ require("lazy").setup({
 				"nvim-treesitter/nvim-treesitter",
 				"nvim-neotest/neotest-python",
 			},
-      config = function()
-        require("neotest").setup({
-          adapters = {
-            require("neotest-python"),
-          }
-        })
-      end,
+			config = function()
+				require("neotest").setup({
+					adapters = {
+						require("neotest-python"),
+					},
+				})
+			end,
 			keys = {
 				{ "gtn", ":lua require('neotest').run.run()<cr>" },
 				{ "gtd", ":lua require('neotest').run.run({strategy = 'dap'})<cr>" },
@@ -124,6 +124,26 @@ require("lazy").setup({
 							init_selection = "<cr>",
 							node_incremental = "<cr>",
 							node_decremental = "<space>",
+						},
+					},
+				})
+			end,
+		},
+		{
+			"nvim-treesitter/nvim-treesitter-textobjects",
+			event = "VeryLazy",
+			config = function()
+				require("nvim-treesitter.configs").setup({
+					textobjects = {
+						select = {
+							enable = true,
+							lookahead = true,
+							keymaps = {
+								["af"] = "@function.outer",
+								["if"] = "@function.inner",
+								["ac"] = "@class.outer",
+								["ic"] = "@class.inner",
+							},
 						},
 					},
 				})
