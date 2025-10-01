@@ -145,9 +145,25 @@ require("lazy").setup({
 								["ic"] = "@class.inner",
 							},
 						},
+						lsp_interop = {
+							enable = true,
+							border = "none",
+							floating_preview_opts = {},
+							peek_definition_code = {
+								["<leader>df"] = "@function.outer",
+								["<leader>dF"] = "@class.outer",
+							},
+						},
 					},
 				})
 			end,
+		},
+		{
+			"nvim-treesitter/nvim-treesitter-context",
+			event = "VeryLazy",
+			keys = {
+				{ "<leader>c", ":lua require('treesitter-context').toggle()<cr>" },
+			},
 		},
 		{ "kylechui/nvim-surround", event = "VeryLazy", opts = {} },
 		{

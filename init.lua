@@ -4,7 +4,6 @@ vim.opt.ignorecase = true
 vim.opt.number = true
 vim.opt.wrap = false
 vim.opt.confirm = true
-vim.opt.laststatus = 3
 vim.opt.tabstop = 2
 vim.opt.shiftwidth = 2
 vim.opt.expandtab = true
@@ -37,6 +36,7 @@ vim.keymap.set("n", "<c-h>", "<c-w>h")
 vim.keymap.set("n", "<c-j>", "<c-w>j")
 vim.keymap.set("n", "<c-k>", "<c-w>k")
 vim.keymap.set("n", "<c-l>", "<c-w>l")
+vim.keymap.set("n", "<tab>", "<c-^>")
 vim.keymap.set("n", "<a-t>", ":belowright 12split | term<cr>i", { desc = "terminal" })
 vim.keymap.set("n", "<a-p>", ":tabnew | term python<cr>i", { desc = "python repl" })
 vim.keymap.set("n", "<a-s>", ":tabnew | term ddgr<cr>i", { desc = "duck duck go" })
