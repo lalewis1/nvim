@@ -107,7 +107,7 @@ require("lazy").setup({
 			"theHamsta/nvim-dap-virtual-text",
 			event = "VeryLazy",
 			opts = {},
-			keys = { { "gdv", ":DapVirtualTextToggle<cr>" } },
+			keys = { { "<leader>v", ":DapVirtualTextToggle<cr>" } },
 		},
 		{
 			"nvim-treesitter/nvim-treesitter",
@@ -161,6 +161,10 @@ require("lazy").setup({
 		{
 			"nvim-treesitter/nvim-treesitter-context",
 			event = "VeryLazy",
+			config = function()
+				vim.api.nvim_set_hl(0, "TreesitterContextLineNumberBottom", { underline = true, sp = "Grey" })
+				vim.api.nvim_set_hl(0, "TreesitterContextBottom", { underline = true, sp = "Grey" })
+			end,
 			keys = {
 				{ "<leader>c", ":lua require('treesitter-context').toggle()<cr>" },
 			},

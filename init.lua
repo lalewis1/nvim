@@ -45,7 +45,7 @@ vim.keymap.set("v", "<a-s>", '"vy:tabnew | term ddgr <c-r>v<cr>', { desc = "duck
 require("plugins")
 require("functions")
 
-vim.cmd.colorscheme("onedark")
+vim.cmd.colorscheme("solarized")
 
 vim.diagnostic.config({ virtual_text = true })
 vim.lsp.enable("luals")
