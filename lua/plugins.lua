@@ -312,36 +312,6 @@ require("lazy").setup({
 				{ "-", ":Oil<cr>" },
 			},
 		},
-		{
-			"NeogitOrg/neogit",
-			dependencies = {
-				"nvim-lua/plenary.nvim", -- required
-				"sindrets/diffview.nvim", -- optional - Diff integration
-				"ibhagwan/fzf-lua", -- optional
-			},
-			opts = {
-				commit_editor = {
-					show_staged_diff = false,
-				},
-			},
-			keys = {
-				{ "<a-g>", ":Neogit<cr>" },
-			},
-		},
-		{
-			"sindrets/diffview.nvim",
-			setup = function()
-				vim.opt.fillchars:append({ diff = "/" })
-			end,
-			opts = {
-				use_icons = false,
-				enhanced_diff_hl = true,
-			},
-			keys = {
-				{ "<leader>dv", ":DiffviewFileHistory %<cr>" },
-				{ "<a-d>", ":DiffviewOpen<cr>" },
-			},
-		},
 	},
 	install = { colorscheme = { "habamax" } },
 })
