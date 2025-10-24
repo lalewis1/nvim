@@ -32,6 +32,9 @@ require("lazy").setup({
 			"mfussenegger/nvim-dap",
 			event = "VeryLazy",
 			keys = {
+				{ "<F2>", ":lua require('dap').clear_breakpoints()<cr>" },
+				{ "<F3>", ":lua require('dap').list_breakpoints()<cr>:copen<cr>" },
+				{ "<F4>", ":lua require('dap').toggle_breakpoint()<cr>" },
 				{ "<F5>", ":lua require('dap').continue()<cr>" },
 				{ "<F6>", ":lua require('dap').run_last()<cr>" },
 				{ "<F7>", ":lua require('dap').terminate()<cr>" },
@@ -40,15 +43,12 @@ require("lazy").setup({
 				{ "<F10>", ":lua require('dap').step_over()<cr>" },
 				{ "<F11>", ":lua require('dap').step_into()<cr>" },
 				{ "<F12>", ":lua require('dap').step_out()<cr>" },
-				{ "gdl", ":lua require('dap').list_breakpoints()<cr>:copen<cr>" },
-				{ "gdc", ":lua require('dap').clear_breakpoints()<cr>" },
-				{ "gdb", ":lua require('dap').toggle_breakpoint()<cr>" },
-				{ "gdB", ":lua require('dap').toggle_breakpoint(nil, vim.fn.input('condition: '))<cr>" },
-				{ "gdL", ":lua require('dap').toggle_breakpoint(nil, nil, vim.fn.input('logpoint message: '))<cr>" },
+				{ "gdb", ":lua require('dap').toggle_breakpoint(nil, vim.fn.input('condition: '))<cr>" },
+				{ "gdl", ":lua require('dap').toggle_breakpoint(nil, nil, vim.fn.input('logpoint message: '))<cr>" },
 				{ "gdh", ":lua require('dap.ui.widgets').hover()<cr>" },
 				{ "<a-r>", ":lua require('dap').repl.toggle()<cr>" },
 				{
-					"gds",
+					"<a-s>",
 					":lua require('dap.ui.widgets').sidebar(require('dap.ui.widgets').scopes, {width = 65}, 'vsplit').open()<cr>",
 				},
 			},
@@ -209,6 +209,9 @@ require("lazy").setup({
 						formatter = vim.fn.executable("jq") == 1 and { "jq", "." },
 					},
 					["text/turtle"] = {
+						ft = "turtle",
+					},
+					["text/anot+turtle"] = {
 						ft = "turtle",
 					},
 					["text/csv"] = {
