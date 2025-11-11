@@ -1,3 +1,5 @@
+-- uv tool install python-lsp-server[pycodestyle,pyflakes,pydocstyle,mccabe]
+
 local capabilities = require("blink.cmp").get_lsp_capabilities()
 return {
 	cmd = { "pylsp" },
@@ -7,9 +9,9 @@ return {
 	settings = {
 		pylsp = {
 			plugins = {
-				-- pydocstyle = {
-				-- 	enabled = true,
-				-- },
+				pydocstyle = {
+					enabled = false,
+				},
 				mccabe = {
 					enabled = false,
 				},
