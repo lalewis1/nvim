@@ -7,12 +7,18 @@ return {
 	settings = {
 		pylsp = {
 			plugins = {
+				-- pydocstyle = {
+				-- 	enabled = true,
+				-- },
+				mccabe = {
+					enabled = false,
+				},
 				pycodestyle = {
 					ignore = {
-            "E501",  -- line too long
-            "W503",  -- line break before binary operator
-            "W504",  -- line break after binary operator
-          },
+						"E501", -- line too long
+						"W503", -- line break before binary operator
+						"W504", -- line break after binary operator
+					},
 					maxLineLength = 88,
 				},
 			},
