@@ -78,5 +78,6 @@ vim.filetype.add({
 		["trig"] = "trig",
 		["ttl"] = "turtle",
 		["conf"] = "nginx",
+		["service"] = "systemd",
 	},
 })
