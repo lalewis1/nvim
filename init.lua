@@ -49,6 +49,7 @@ vim.cmd.colorscheme("onedark")
 
 vim.diagnostic.config({ virtual_text = true })
 vim.lsp.enable("luals")
+-- vim.lsp.enable("basedpyright")
 vim.lsp.enable("pylsp")
 vim.lsp.enable("ruff")
 vim.lsp.enable("sparql")
