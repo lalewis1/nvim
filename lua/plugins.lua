@@ -315,6 +315,17 @@ require("lazy").setup({
 				{ "-", ":Oil<cr>" },
 			},
 		},
+		{
+			"NeogitOrg/neogit",
+			dependencies = {
+				"nvim-lua/plenary.nvim", -- required
+				"sindrets/diffview.nvim", -- optional - Diff integration
+				"ibhagwan/fzf-lua", -- optional
+			},
+			keys = {
+				{ "<a-g>", ":Neogit<cr>" },
+			},
+		},
 	},
 	install = { colorscheme = { "habamax" } },
 })
