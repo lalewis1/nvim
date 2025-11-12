@@ -45,7 +45,7 @@ vim.keymap.set("n", "<a-p>", ":tabnew | term python<cr>i", { desc = "python repl
 require("plugins")
 require("functions")
 
-vim.cmd.colorscheme("onedark")
+vim.cmd.colorscheme("solarized")
 
 vim.diagnostic.config({ virtual_text = true })
 vim.lsp.enable("luals")
