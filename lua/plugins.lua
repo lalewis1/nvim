@@ -324,13 +324,13 @@ require("lazy").setup({
 			},
 			opts = {
 				graph_style = "unicode",
-        process_spinner = true,
+				process_spinner = true,
 				commit_editor = {
 					show_staged_diff = false,
 				},
 			},
 			keys = {
-				{ "<a-g>", ":Neogit<cr>" },
+				{ "<a-k>", ":Neogit<cr>" },
 			},
 		},
 		{
