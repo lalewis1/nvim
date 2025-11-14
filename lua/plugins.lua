@@ -323,6 +323,8 @@ require("lazy").setup({
 				"ibhagwan/fzf-lua", -- optional
 			},
 			opts = {
+				graph_style = "unicode",
+        process_spinner = true,
 				commit_editor = {
 					show_staged_diff = false,
 				},
