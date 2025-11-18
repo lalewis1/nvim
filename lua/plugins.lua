@@ -164,6 +164,9 @@ require("lazy").setup({
 			config = function()
 				vim.api.nvim_set_hl(0, "TreesitterContextLineNumberBottom", { underline = true, sp = "Grey" })
 				vim.api.nvim_set_hl(0, "TreesitterContextBottom", { underline = true, sp = "Grey" })
+				require("treesitter-context").setup({
+					enable = false,
+				})
 			end,
 			keys = {
 				{ "<leader>c", ":lua require('treesitter-context').toggle()<cr>" },
@@ -220,7 +223,7 @@ require("lazy").setup({
 				},
 			},
 			keys = {
-				{ "<leader>k", ":lua require('kulala').scratchpad()<cr>" },
+				{ "<leader>h", ":lua require('kulala').scratchpad()<cr>" },
 			},
 		},
 		{
@@ -330,7 +333,7 @@ require("lazy").setup({
 				},
 			},
 			keys = {
-				{ "<a-k>", ":Neogit<cr>" },
+				{ "<leader>k", ":Neogit<cr>" },
 			},
 		},
 		{
