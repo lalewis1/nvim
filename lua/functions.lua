@@ -20,4 +20,18 @@ function M.get_uri()
 	end)
 end
 
+function M.cupick()
+	local fzf = require("fzf-lua")
+	local items = vim.fn.systemlist("task -a | awk '/*/ {sub(/:$/,\"\", $2); print $2}'")
+	fzf.fzf_exec(items, {
+		prompt = "Run a task> ",
+		actions = {
+			["default"] = function(selected)
+				local cmd = "!task " .. selected[1]
+				vim.cmd(cmd)
+			end,
+		},
+	})
+end
+
 return M

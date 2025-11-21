@@ -23,7 +23,7 @@ vim.g.netrw_sizestyle = "H"
 
 vim.keymap.set("n", "<leader>w", ":w<cr>")
 vim.keymap.set("n", "<leader>z", ":set wrap!<cr>")
-vim.keymap.set("n", "q", "<c-w>q")
+vim.keymap.set("n", "q", ":bd<cr>")
 vim.keymap.set("n", "Q", "q")
 vim.keymap.set("n", "<a-h>", "2<c-w><")
 vim.keymap.set("n", "<a-j>", "2<c-w>-")
@@ -43,7 +43,9 @@ vim.keymap.set("n", "<a-t>", ":belowright 12split | term<cr>i", { desc = "termin
 vim.keymap.set("n", "<a-p>", ":tabnew | term python<cr>i", { desc = "python repl" })
 
 require("plugins")
-require("functions")
+local funcs = require("functions")
+
+vim.keymap.set("n", "<leader>t", funcs.cupick)
 
 vim.cmd.colorscheme("solarized")
 
