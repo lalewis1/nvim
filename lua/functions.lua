@@ -27,8 +27,9 @@ function M.cupick()
 		prompt = "Run a task> ",
 		actions = {
 			["default"] = function(selected)
-				local cmd = "!task " .. selected[1]
-				vim.cmd(cmd)
+				local taskname = selected[1]
+				vim.cmd("tabnew")
+				vim.cmd("terminal task " .. taskname)
 			end,
 		},
 	})
