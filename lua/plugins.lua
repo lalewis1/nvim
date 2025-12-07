@@ -223,7 +223,7 @@ require("lazy").setup({
 				},
 			},
 			keys = {
-				{ "<a-h>", ":lua require('kulala').scratchpad()<cr>" },
+				{ "<leader>k", ":lua require('kulala').scratchpad()<cr>" },
 			},
 		},
 		{
