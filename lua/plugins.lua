@@ -175,6 +175,7 @@ require("lazy").setup({
 		{ "kylechui/nvim-surround", event = "VeryLazy", opts = {} },
 		{
 			"olimorris/codecompanion.nvim",
+			tag = "v17.33.0",
 			config = true,
 			dependencies = {
 				"nvim-lua/plenary.nvim",
