@@ -31,44 +31,49 @@ end
 ---   - Description (if available)
 ---   - Commands for the task
 function M.taskpicker()
-  local fzf = require("fzf-lua")
-  -- Gather task list using "task --json"
-  local json = vim.fn.system("task --list --json")
-  if vim.v.shell_error ~= 0 or not json or json == "" then
-    vim.notify("Failed to get task data (is 'task' installed and Taskfile present?)", vim.log.levels.ERROR)
-    return
-  end
-  local data = vim.fn.json_decode(json)
-  if type(data) ~= "table" or not data.tasks or type(data.tasks) ~= "table" then
-    vim.notify("No tasks found in Taskfile", vim.log.levels.ERROR)
-    return
-  end
-  local items = {}
-  local task_map = {}
-  for _, task in ipairs(data.tasks) do
-    items[#items+1] = task.name
-    task_map[task.name] = {
-      summary = "task " .. task.name .. " --summary"
-    }
-  end
-  fzf.fzf_exec(items, {
-    prompt = "Run a task> ",
-    preview = function(item)
-      item = vim.trim(item[1])
-      local task = task_map[item]
-      if not task then return "(Task not found)" end
-      return vim.fn.system(task.summary)
-    end,
-    actions = {
-      ["default"] = function(selected)
-        local picked = selected[1]
-        local task = task_map[picked]
-        if not task then return end
-        vim.cmd("tabnew")
-        vim.cmd("terminal task " .. task.name)
-      end,
-    },
-  })
+	local fzf = require("fzf-lua")
+	-- Gather task list using "task --json"
+	local json = vim.fn.system("task --list --json")
+	if vim.v.shell_error ~= 0 or not json or json == "" then
+		vim.notify("Failed to get task data (is 'task' installed and Taskfile present?)", vim.log.levels.ERROR)
+		return
+	end
+	local data = vim.fn.json_decode(json)
+	if type(data) ~= "table" or not data.tasks or type(data.tasks) ~= "table" then
+		vim.notify("No tasks found in Taskfile", vim.log.levels.ERROR)
+		return
+	end
+	local items = {}
+	local task_map = {}
+	for _, task in ipairs(data.tasks) do
+		items[#items + 1] = task.name
+		task_map[task.name] = {
+			name = task.name,
+			summary = "task " .. task.name .. " --summary",
+		}
+	end
+	fzf.fzf_exec(items, {
+		prompt = "Run a task> ",
+		preview = function(selected)
+			local picked = vim.trim(selected[1])
+			local task = task_map[picked]
+			if not task then
+				return "(Task not found)"
+			end
+			return vim.fn.system(task.summary)
+		end,
+		actions = {
+			["default"] = function(selected)
+				local picked = selected[1]
+				local task = task_map[picked]
+				if not task then
+					return
+				end
+				vim.cmd("tabnew")
+				vim.cmd("terminal task " .. task.name)
+			end,
+		},
+	})
 end
 
 return M
