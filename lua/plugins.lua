@@ -175,14 +175,14 @@ require("lazy").setup({
 		{ "kylechui/nvim-surround", event = "VeryLazy", opts = {} },
 		{
 			"olimorris/codecompanion.nvim",
-			tag = "v17.33.0",
+			-- tag = "v17.33.0",
 			config = true,
 			dependencies = {
 				"nvim-lua/plenary.nvim",
 				"nvim-treesitter/nvim-treesitter",
 			},
 			opts = {
-				strategies = {
+				interactions = {
 					chat = {
 						adapter = "openai",
 					},
@@ -192,7 +192,7 @@ require("lazy").setup({
 				},
 			},
 			keys = {
-				{ "<a-c>", ":CodeCompanionChat<cr>" },
+				{ "<a-c>", ":CodeCompanionChat toggle<cr>" },
 				{ "<a-c>", "<esc>:CodeCompanion ", mode = "i" },
 			},
 		},

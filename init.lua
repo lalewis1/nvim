@@ -38,15 +38,15 @@ vim.keymap.set("n", "<c-k>", "<c-w>k")
 vim.keymap.set("n", "<c-l>", "<c-w>l")
 vim.keymap.set("n", "[t", ":tabprevious<cr>")
 vim.keymap.set("n", "]t", ":tabnext<cr>")
-vim.keymap.set("n", "<tab>", ":bn<cr>")
-vim.keymap.set("n", "<s-tab>", ":bp<cr>")
+vim.keymap.set("n", "<tab>", ":bp<cr>")
+vim.keymap.set("n", "<s-tab>", ":bn<cr>")
 vim.keymap.set("n", "<a-t>", ":belowright 12split | term<cr>i", { desc = "terminal" })
 vim.keymap.set("n", "<a-p>", ":tabnew | term python<cr>i", { desc = "python repl" })
 
 require("plugins")
 local funcs = require("functions")
 
-vim.keymap.set("n", "<leader>t", funcs.cupick)
+vim.keymap.set("n", "<leader>t", funcs.taskpicker)
 
 vim.cmd.colorscheme("solarized")
 
@@ -68,6 +68,7 @@ vim.lsp.enable("tailwindcss")
 vim.lsp.enable("docker_compose_language_service")
 vim.lsp.enable("dockerls")
 vim.lsp.enable("ansiblels")
+vim.lsp.enable("marksman")
 vim.api.nvim_create_autocmd("LspAttach", {
 	callback = function(ev)
 		local client = vim.lsp.get_client_by_id(ev.data.client_id)
