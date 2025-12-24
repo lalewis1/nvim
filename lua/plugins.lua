@@ -16,6 +16,10 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
 	spec = {
+		-- Miscellanous
+		-- ##########################################################
+		{ "LunarVim/bigfile.nvim" },
+		{ "kylechui/nvim-surround" },
 		{ "maxmx03/solarized.nvim" },
 		{
 			"navarasu/onedark.nvim",
@@ -27,45 +31,24 @@ require("lazy").setup({
 				require("onedark").load()
 			end,
 		},
-		{ "LunarVim/bigfile.nvim" },
-		{ "kylechui/nvim-surround", event = "VeryLazy", opts = {} },
+		-- Debugmaster
+		-- ##########################################################
 		{
-			"mfussenegger/nvim-dap",
-			event = "VeryLazy",
-			keys = {
-				{ "<F2>", ":lua require('dap').clear_breakpoints()<cr>" },
-				{ "<F3>", ":lua require('dap').list_breakpoints()<cr>:copen<cr>" },
-				{ "<F4>", ":lua require('dap').toggle_breakpoint()<cr>" },
-				{ "<F5>", ":lua require('dap').continue()<cr>" },
-				{ "<F6>", ":lua require('dap').run_last()<cr>" },
-				{ "<F7>", ":lua require('dap').terminate()<cr>" },
-				{ "<F8>", ":lua require('dap').restart()<cr>" },
-				{ "<F9>", ":lua require('dap').run_to_cursor()<cr>" },
-				{ "<F10>", ":lua require('dap').step_over()<cr>" },
-				{ "<F11>", ":lua require('dap').step_into()<cr>" },
-				{ "<F12>", ":lua require('dap').step_out()<cr>" },
-				{ "gdb", ":lua require('dap').toggle_breakpoint(nil, vim.fn.input('condition: '))<cr>" },
-				{ "gdl", ":lua require('dap').toggle_breakpoint(nil, nil, vim.fn.input('logpoint message: '))<cr>" },
-				{ "gdh", ":lua require('dap.ui.widgets').hover()<cr>" },
-				{ "<a-r>", ":lua require('dap').repl.toggle()<cr>" },
-				{
-					"<a-s>",
-					":lua require('dap.ui.widgets').sidebar(require('dap.ui.widgets').scopes, {width = 65}, 'vsplit').open()<cr>",
-				},
+			"miroshQa/debugmaster.nvim",
+			dependencies = {
+				"mfussenegger/nvim-dap",
+				"mfussenegger/nvim-dap-python",
+				"theHamsta/nvim-dap-virtual-text",
 			},
 			config = function()
 				local dap = require("dap")
 				dap.defaults.fallback.switchbuf = "usevisible,usetab,uselast"
 				dap.defaults.fallback.terminal_win_cmd = "10split new"
-			end,
-		},
-		{
-			"mfussenegger/nvim-dap-python",
-			lazy = false,
-			config = function()
-				require("dap-python").setup("~/.local/share/uv/tools/debugpy/bin/python")
-				require("dap-python").test_runner = "pytest"
-				table.insert(require("dap").configurations.python, {
+
+				local dappy = require("dap-python")
+				dappy.setup("~/.local/share/uv/tools/debugpy/bin/python")
+				dappy.test_runner = "pytest"
+				table.insert(dap.configurations.python, {
 					type = "python",
 					request = "launch",
 					name = "jinja and allcode",
@@ -75,11 +58,15 @@ require("lazy").setup({
 				})
 			end,
 			keys = {
+				{ "<a-d>", ":lua require('debugmaster').mode.toggle<cr>)" },
+				{ "<leader>v", ":DapVirtualTextToggle<cr>" },
 				{ "gtm", ":lua require('dap-python').test_method()<cr>" },
 				{ "gtc", ":lua require('dap-python').test_class()<cr>" },
 				{ "gds", ":lua require('dap-python').debug_selection()<cr>" },
 			},
 		},
+		-- Neotest
+		-- ##########################################################
 		{
 			"nvim-neotest/neotest",
 			dependencies = {
@@ -104,18 +91,26 @@ require("lazy").setup({
 				{ "gto", ":lua require('neotest').output_panel.toggle()<cr>" },
 			},
 		},
-		{
-			"theHamsta/nvim-dap-virtual-text",
-			event = "VeryLazy",
-			opts = {},
-			keys = { { "<leader>v", ":DapVirtualTextToggle<cr>" } },
-		},
+		-- Treesitter
+		-- ##########################################################
 		{
 			"nvim-treesitter/nvim-treesitter",
+			dependencies = {
+				"nvim-treesitter/nvim-treesitter-textobjects",
+				"nvim-treesitter/nvim-treesitter-context",
+			},
+			event = "VeryLazy",
 			config = function()
 				vim.o.foldmethod = "expr"
 				vim.o.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 				vim.o.foldlevel = 99
+
+				vim.api.nvim_set_hl(0, "TreesitterContextLineNumberBottom", { underline = true, sp = "Grey" })
+				vim.api.nvim_set_hl(0, "TreesitterContextBottom", { underline = true, sp = "Grey" })
+				require("treesitter-context").setup({
+					enable = false,
+				})
+
 				require("nvim-treesitter.configs").setup({
 					highlight = { enable = true },
 					indent = { enable = true },
@@ -127,14 +122,6 @@ require("lazy").setup({
 							node_decremental = "<space>",
 						},
 					},
-				})
-			end,
-		},
-		{
-			"nvim-treesitter/nvim-treesitter-textobjects",
-			event = "VeryLazy",
-			config = function()
-				require("nvim-treesitter.configs").setup({
 					textobjects = {
 						select = {
 							enable = true,
@@ -158,24 +145,14 @@ require("lazy").setup({
 					},
 				})
 			end,
-		},
-		{
-			"nvim-treesitter/nvim-treesitter-context",
-			event = "VeryLazy",
-			config = function()
-				vim.api.nvim_set_hl(0, "TreesitterContextLineNumberBottom", { underline = true, sp = "Grey" })
-				vim.api.nvim_set_hl(0, "TreesitterContextBottom", { underline = true, sp = "Grey" })
-				require("treesitter-context").setup({
-					enable = false,
-				})
-			end,
 			keys = {
 				{ "<leader>c", ":lua require('treesitter-context').toggle()<cr>" },
 			},
 		},
+		-- CodeCompanion
+		-- ##########################################################
 		{
 			"olimorris/codecompanion.nvim",
-			-- tag = "v17.33.0",
 			config = true,
 			dependencies = {
 				"nvim-lua/plenary.nvim",
@@ -196,6 +173,8 @@ require("lazy").setup({
 				{ "<a-c>", "<esc>:CodeCompanion ", mode = "i" },
 			},
 		},
+		-- Kulala
+		-- ##########################################################
 		{
 			"mistweaverco/kulala.nvim",
 			ft = { "http" },
@@ -227,6 +206,8 @@ require("lazy").setup({
 				{ "<leader>k", ":lua require('kulala').scratchpad()<cr>" },
 			},
 		},
+		-- FZF-Lua
+		-- ##########################################################
 		{
 			"ibhagwan/fzf-lua",
 			event = "VeryLazy",
@@ -244,6 +225,8 @@ require("lazy").setup({
 				fzflua.register_ui_select()
 			end,
 		},
+		-- blink.cmp
+		-- ##########################################################
 		{
 			"saghen/blink.cmp",
 			dependencies = { "rafamadriz/friendly-snippets" },
@@ -259,6 +242,8 @@ require("lazy").setup({
 			},
 			opts_extend = { "sources.default" },
 		},
+		-- Conform
+		-- ##########################################################
 		{
 			"stevearc/conform.nvim",
 			opts = {
@@ -293,14 +278,17 @@ require("lazy").setup({
 				{ "<leader>fm", ":lua require('conform').format({ async = true })<cr>" },
 			},
 		},
+		-- Live Preview (markdown)
+		-- ##########################################################
 		{
 			"brianhuster/live-preview.nvim",
-			dependencies = { "ibhagwan/fzf-lua" },
 			ft = { "markdown" },
 			keys = {
 				{ "<leader>lp", ":LivePreview start<cr>" },
 			},
 		},
+		-- Oil
+		-- ##########################################################
 		{
 			"stevearc/oil.nvim",
 			event = "VimEnter",
@@ -319,6 +307,8 @@ require("lazy").setup({
 				{ "-", ":Oil<cr>" },
 			},
 		},
+		-- Neogit
+		-- ##########################################################
 		{
 			"NeogitOrg/neogit",
 			dependencies = {
@@ -337,6 +327,8 @@ require("lazy").setup({
 				{ "<a-o>", ":Neogit<cr>" },
 			},
 		},
+		-- Diffview
+		-- ##########################################################
 		{
 			"sindrets/diffview.nvim",
 			setup = function()
@@ -347,8 +339,8 @@ require("lazy").setup({
 				enhanced_diff_hl = true,
 			},
 			keys = {
-				{ "<leader>dv", ":DiffviewFileHistory %<cr>" },
-				{ "<a-d>", ":DiffviewOpen<cr>" },
+				{ "<leader>dv", ":DiffviewOpen<cr>" },
+				{ "<leader>df", ":DiffviewFileHistory %<cr>" },
 			},
 		},
 	},
