@@ -58,7 +58,7 @@ require("lazy").setup({
 				})
 			end,
 			keys = {
-				{ "<a-d>", ":lua require('debugmaster').mode.toggle<cr>)" },
+				{ "<a-d>", ":lua require('debugmaster').mode.toggle()<cr>" },
 				{ "<leader>v", ":DapVirtualTextToggle<cr>" },
 				{ "gtm", ":lua require('dap-python').test_method()<cr>" },
 				{ "gtc", ":lua require('dap-python').test_class()<cr>" },
