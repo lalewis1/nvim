@@ -41,6 +41,62 @@ require("lazy").setup({
 				"theHamsta/nvim-dap-virtual-text",
 			},
 			config = function()
+				local function hex_to_rgb(hex)
+					hex = hex:gsub("#", "")
+					return tonumber(hex:sub(1, 2), 16), tonumber(hex:sub(3, 4), 16), tonumber(hex:sub(5, 6), 16)
+				end
+
+				local function rgb_to_hex(r, g, b)
+					return string.format("#%02x%02x%02x", r, g, b)
+				end
+
+				local function darken(hex_color, factor)
+					local r, g, b = hex_to_rgb(hex_color)
+					r = math.floor(r * factor)
+					g = math.floor(g * factor)
+					b = math.floor(b * factor)
+					return rgb_to_hex(r, g, b)
+				end
+
+				local original_bgs = {}
+
+				local highlight_groups = { "Normal", "NormalNC", "SignColumn", "EndOfBuffer" }
+
+				vim.api.nvim_create_autocmd("User", {
+					pattern = "DebugModeChanged",
+					callback = function(args)
+						-- Save original backgrounds
+						for _, group in ipairs(highlight_groups) do
+							local hl = vim.api.nvim_get_hl(0, { name = group, link = false })
+							if not original_bgs[group] and hl.bg then
+								original_bgs[group] = string.format("#%06x", hl.bg)
+							elseif not original_bgs[group] then
+								-- fallback: use Normal bg
+								local normal_hl = vim.api.nvim_get_hl(0, { name = "Normal", link = false })
+								if normal_hl.bg then
+									original_bgs[group] = string.format("#%06x", normal_hl.bg)
+								end
+							end
+						end
+						if args.data.enabled then
+							for _, group in ipairs(highlight_groups) do
+								local bg = original_bgs[group]
+								if bg then
+									local new_bg = darken(bg, 0.8)
+									vim.api.nvim_set_hl(0, group, { bg = new_bg })
+								end
+							end
+						else
+							for _, group in ipairs(highlight_groups) do
+								local bg = original_bgs[group]
+								if bg then
+									vim.api.nvim_set_hl(0, group, { bg = bg })
+								end
+							end
+						end
+					end,
+				})
+
 				local dap = require("dap")
 				dap.defaults.fallback.switchbuf = "usevisible,usetab,uselast"
 				dap.defaults.fallback.terminal_win_cmd = "10split new"
@@ -84,11 +140,9 @@ require("lazy").setup({
 				})
 			end,
 			keys = {
+				{ "<a-t>", ":lua require('neotest').summary.toggle(); require('neotest').output_panel.toggle()<cr>" },
 				{ "gtn", ":lua require('neotest').run.run()<cr>" },
 				{ "gtd", ":lua require('neotest').run.run({strategy = 'dap'})<cr>" },
-				{ "gta", ":lua require('neotest').run.run(vim.fn.expand('%'))<cr>" },
-				{ "gts", ":lua require('neotest').summary.toggle()<cr>" },
-				{ "gto", ":lua require('neotest').output_panel.toggle()<cr>" },
 			},
 		},
 		-- Treesitter
@@ -324,7 +378,7 @@ require("lazy").setup({
 				},
 			},
 			keys = {
-				{ "<a-o>", ":Neogit<cr>" },
+				{ "<a-g>", ":Neogit<cr>" },
 			},
 		},
 		-- Diffview
