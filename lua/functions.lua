@@ -22,7 +22,7 @@ end
 
 ---@summary Open a picker UI to select a Taskfile task to run.
 ---
---- Uses fzf-lua to present a list of available tasks from Taskfile (via `task --list --json`).
+--- Uses fzf-lua to present a list of available tasks from Taskfile (via `task --list-all --json`).
 --- Each entry shows the task name.
 --- Selecting a task opens a new tab and runs the task in a terminal.
 ---
@@ -32,8 +32,8 @@ end
 ---   - Commands for the task
 function M.taskpicker()
 	local fzf = require("fzf-lua")
-	-- Gather task list using "task --json"
-	local json = vim.fn.system("task --list --json")
+	-- Gather task list using "task --list-all --json"
+	local json = vim.fn.system("task --list-all --json")
 	if vim.v.shell_error ~= 0 or not json or json == "" then
 		vim.notify("Failed to get task data (is 'task' installed and Taskfile present?)", vim.log.levels.ERROR)
 		return

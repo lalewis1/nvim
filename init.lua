@@ -48,7 +48,7 @@ local funcs = require("functions")
 
 vim.keymap.set("n", "<leader>t", funcs.taskpicker)
 
-vim.cmd.colorscheme("solarized")
+vim.cmd.colorscheme("onedark")
 
 vim.diagnostic.config({ virtual_text = true })
 vim.lsp.enable("luals")

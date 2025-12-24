@@ -28,6 +28,7 @@ require("lazy").setup({
 			end,
 		},
 		{ "LunarVim/bigfile.nvim" },
+		{ "kylechui/nvim-surround", event = "VeryLazy", opts = {} },
 		{
 			"mfussenegger/nvim-dap",
 			event = "VeryLazy",
@@ -172,7 +173,6 @@ require("lazy").setup({
 				{ "<leader>c", ":lua require('treesitter-context').toggle()<cr>" },
 			},
 		},
-		{ "kylechui/nvim-surround", event = "VeryLazy", opts = {} },
 		{
 			"olimorris/codecompanion.nvim",
 			-- tag = "v17.33.0",
@@ -269,9 +269,9 @@ require("lazy").setup({
 						stdin = false,
 					},
 					sparql_fmt = {
-						command = "sparql_fmt",
+						command = "sparql-formatter",
 						args = { "$FILENAME" },
-						stdin = false,
+						stdin = true,
 					},
 				},
 				formatters_by_ft = {
@@ -334,7 +334,7 @@ require("lazy").setup({
 				},
 			},
 			keys = {
-				{ "gk", ":Neogit<cr>" },
+				{ "<a-o>", ":Neogit<cr>" },
 			},
 		},
 		{
