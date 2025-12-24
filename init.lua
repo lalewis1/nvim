@@ -24,6 +24,7 @@ vim.g.netrw_sizestyle = "H"
 vim.keymap.set("n", "<leader>w", ":w<cr>")
 vim.keymap.set("n", "<leader>z", ":set wrap!<cr>")
 vim.keymap.set("n", "q", ":bd<cr>")
+vim.keymap.set("n", "<a-q>", ":qa<cr>")
 vim.keymap.set("n", "Q", "q")
 vim.keymap.set("n", "<a-h>", "2<c-w><")
 vim.keymap.set("n", "<a-j>", "2<c-w>-")
@@ -48,7 +49,7 @@ local funcs = require("functions")
 
 vim.keymap.set("n", "<leader>t", funcs.taskpicker)
 
-vim.cmd.colorscheme("onedark")
+vim.cmd.colorscheme("tokyonight")
 
 vim.diagnostic.config({ virtual_text = true })
 vim.lsp.enable("luals")

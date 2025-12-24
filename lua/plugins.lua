@@ -21,16 +21,8 @@ require("lazy").setup({
 		{ "LunarVim/bigfile.nvim" },
 		{ "kylechui/nvim-surround" },
 		{ "maxmx03/solarized.nvim" },
-		{
-			"navarasu/onedark.nvim",
-			priority = 1000,
-			config = function()
-				require("onedark").setup({
-					style = "dark",
-				})
-				require("onedark").load()
-			end,
-		},
+		{ "olimorris/onedarkpro.nvim" },
+		{ "folke/tokyonight.nvim" },
 		-- Debugmaster
 		-- ##########################################################
 		{
