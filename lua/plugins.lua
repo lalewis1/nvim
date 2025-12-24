@@ -52,7 +52,7 @@ require("lazy").setup({
 
 				local original_bgs = {}
 
-				local highlight_groups = { "Normal", "NormalNC", "SignColumn", "EndOfBuffer" }
+				local highlight_groups = { "Normal", "NormalNC", "SignColumn" }
 
 				vim.api.nvim_create_autocmd("User", {
 					pattern = "DebugModeChanged",
@@ -72,10 +72,15 @@ require("lazy").setup({
 						end
 						if args.data.enabled then
 							for _, group in ipairs(highlight_groups) do
-								local bg = original_bgs[group]
-								if bg then
-									local new_bg = darken(bg, 0.8)
-									vim.api.nvim_set_hl(0, group, { bg = new_bg })
+								if group == "SignColumn" then
+									-- Set a greenish sign column background
+									vim.api.nvim_set_hl(0, group, { bg = "#3a5e3a" }) -- greenish
+								else
+									local bg = original_bgs[group]
+									if bg then
+										local new_bg = darken(bg, 0.8)
+										vim.api.nvim_set_hl(0, group, { bg = new_bg })
+									end
 								end
 							end
 						else
