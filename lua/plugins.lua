@@ -19,7 +19,8 @@ require("lazy").setup({
 		-- Miscellanous
 		-- ##########################################################
 		{ "LunarVim/bigfile.nvim" },
-		{ "kylechui/nvim-surround" },
+		{ "kylechui/nvim-surround", event = "VeryLazy" },
+		{ "dstein64/nvim-scrollview", event = "VeryLazy" },
 		{ "maxmx03/solarized.nvim" },
 		{ "olimorris/onedarkpro.nvim" },
 		{ "folke/tokyonight.nvim" },
@@ -270,6 +271,8 @@ require("lazy").setup({
 				{ "<leader>fb", ":FzfLua buffers<cr>" },
 				{ "<leader>fh", ":FzfLua helptags<cr>" },
 				{ "<leader>fc", ":FzfLua colorschemes<cr>" },
+				{ "<leader>gb", ":FzfLua git_branches<cr>" },
+				{ "<leader>gs", ":FzfLua git_status<cr>" },
 			},
 			config = function()
 				local fzflua = require("fzf-lua")
@@ -375,7 +378,7 @@ require("lazy").setup({
 				},
 			},
 			keys = {
-				{ "<a-g>", ":Neogit<cr>" },
+				{ "<a-n>", ":Neogit<cr>" },
 			},
 		},
 		-- Diffview
