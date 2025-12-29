@@ -20,7 +20,6 @@ require("lazy").setup({
 		-- ##########################################################
 		{ "LunarVim/bigfile.nvim" },
 		{ "kylechui/nvim-surround", event = "VeryLazy" },
-		{ "dstein64/nvim-scrollview", event = "VeryLazy" },
 		{ "maxmx03/solarized.nvim" },
 		{ "olimorris/onedarkpro.nvim" },
 		{ "folke/tokyonight.nvim" },
@@ -34,6 +33,7 @@ require("lazy").setup({
 				"theHamsta/nvim-dap-virtual-text",
 			},
 			config = function()
+				require("nvim-dap-virtual-text").setup({})
 				local function hex_to_rgb(hex)
 					hex = hex:gsub("#", "")
 					return tonumber(hex:sub(1, 2), 16), tonumber(hex:sub(3, 4), 16), tonumber(hex:sub(5, 6), 16)
@@ -105,8 +105,16 @@ require("lazy").setup({
 				table.insert(dap.configurations.python, {
 					type = "python",
 					request = "launch",
-					name = "jinja and allcode",
+					name = "select file",
 					program = "${command:pickFile}",
+					console = "integratedTerminal",
+				})
+				table.insert(dap.configurations.python, {
+					type = "python",
+					request = "launch",
+					name = "select file (jinja and allcode)",
+					program = "${command:pickFile}",
+					console = "integratedTerminal",
 					jinja = true,
 					justMyCode = false,
 				})
@@ -385,6 +393,7 @@ require("lazy").setup({
 		-- ##########################################################
 		{
 			"sindrets/diffview.nvim",
+			event = "VeryLazy",
 			setup = function()
 				vim.opt.fillchars:append({ diff = "/" })
 			end,

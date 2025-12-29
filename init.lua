@@ -84,6 +84,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 vim.filetype.add({
 	extension = {
+		["rq"] = "sparql",
 		["trig"] = "trig",
 		["ttl"] = "turtle",
 		["conf"] = "nginx",
