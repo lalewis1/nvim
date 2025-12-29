@@ -1,6 +1,11 @@
 local M = {}
 
-function M.get_uri()
+---@summary Expand a prefix using the semantic background github pages
+---
+--- makes a curl request to github.io and parses a JSON response to
+--- get the URI from the given prefix and insert it into the buffer at
+--- the current cursor position.
+function M.expand_prefix()
 	vim.ui.input({ prompt = "prefix: " }, function(input)
 		if not input or input == "" then
 			return

@@ -17,9 +17,6 @@ vim.opt.scrolloff = 2
 
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
-vim.g.netrw_banner = false
-vim.g.netrw_list_hide = "\\(^\\|\\s\\s\\)\\zs\\.\\S\\+"
-vim.g.netrw_sizestyle = "H"
 
 vim.keymap.set("n", "<leader>w", ":w<cr>")
 vim.keymap.set("n", "<leader>z", ":set wrap!<cr>")
@@ -47,40 +44,10 @@ vim.keymap.set("n", "<a-p>", ":tabnew | term python<cr>i", { desc = "python cons
 require("plugins")
 local funcs = require("functions")
 
-vim.keymap.set("n", "<leader>t", funcs.taskpicker)
+vim.keymap.set("n", "<leader>t", funcs.taskpicker, { desc = "Task picker" })
+vim.keymap.set("n", "<leader>x", funcs.expand_prefix, { desc = "Expand a prefix" })
 
-vim.cmd.colorscheme("tokyonight")
-
-vim.diagnostic.config({ virtual_text = true })
-vim.lsp.enable("luals")
--- vim.lsp.enable("basedpyright")
-vim.lsp.enable("pylsp")
--- vim.lsp.enable("ruff")
-vim.lsp.enable("sparql")
-vim.lsp.enable("turtle")
-vim.lsp.enable("bicep")
-vim.lsp.enable("emmet")
-vim.lsp.enable("html")
-vim.lsp.enable("json")
-vim.lsp.enable("vtsls")
-vim.lsp.enable("bashls")
-vim.lsp.enable("gh_actions_ls")
-vim.lsp.enable("tailwindcss")
-vim.lsp.enable("docker_compose_language_service")
-vim.lsp.enable("dockerls")
-vim.lsp.enable("ansiblels")
-vim.lsp.enable("marksman")
-vim.api.nvim_create_autocmd("LspAttach", {
-	callback = function(ev)
-		local client = vim.lsp.get_client_by_id(ev.data.client_id)
-		if client then
-			vim.keymap.set("n", "grq", ":lua vim.diagnostic.setqflist()<cr>:copen<cr>", { buffer = ev.buf })
-			if client:supports_method("textDocument/completion") then
-				vim.lsp.completion.enable(true, client.id, ev.buf, { autotrigger = false })
-			end
-		end
-	end,
-})
+require("lsp")
 
 vim.filetype.add({
 	extension = {
@@ -91,3 +58,5 @@ vim.filetype.add({
 		["service"] = "systemd",
 	},
 })
+
+vim.cmd.colorscheme("tokyonight")

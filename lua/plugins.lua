@@ -34,6 +34,9 @@ require("lazy").setup({
 			},
 			config = function()
 				require("nvim-dap-virtual-text").setup({})
+
+				-- debugmaster set darkened background with green sidebar while
+				-- debug mode is active.
 				local function hex_to_rgb(hex)
 					hex = hex:gsub("#", "")
 					return tonumber(hex:sub(1, 2), 16), tonumber(hex:sub(3, 4), 16), tonumber(hex:sub(5, 6), 16)
@@ -97,7 +100,6 @@ require("lazy").setup({
 
 				local dap = require("dap")
 				dap.defaults.fallback.switchbuf = "usevisible,usetab,uselast"
-				dap.defaults.fallback.terminal_win_cmd = "10split new"
 
 				local dappy = require("dap-python")
 				dappy.setup("~/.local/share/uv/tools/debugpy/bin/python")
@@ -120,11 +122,8 @@ require("lazy").setup({
 				})
 			end,
 			keys = {
-				{ "<a-d>", ":lua require('debugmaster').mode.toggle()<cr>" },
-				{ "<leader>v", ":DapVirtualTextToggle<cr>" },
-				{ "gtm", ":lua require('dap-python').test_method()<cr>" },
-				{ "gtc", ":lua require('dap-python').test_class()<cr>" },
-				{ "gds", ":lua require('dap-python').debug_selection()<cr>" },
+				{ "<a-d>", ":lua require('debugmaster').mode.toggle()<cr>", { desc = "Debug Mode toggle" } },
+				{ "<leader>v", ":DapVirtualTextToggle<cr>", { desc = "Virtal text (toggle)" } },
 			},
 		},
 		-- Neotest
@@ -146,9 +145,13 @@ require("lazy").setup({
 				})
 			end,
 			keys = {
-				{ "<a-t>", ":lua require('neotest').summary.toggle(); require('neotest').output_panel.toggle()<cr>" },
-				{ "gtn", ":lua require('neotest').run.run()<cr>" },
-				{ "gtd", ":lua require('neotest').run.run({strategy = 'dap'})<cr>" },
+				{
+					"<a-t>",
+					":lua require('neotest').summary.toggle(); require('neotest').output_panel.toggle()<cr>",
+					{ desc = "Test Mode (toggle)" },
+				},
+				{ "gtn", ":lua require('neotest').run.run()<cr>", { desc = "Test nearest test" } },
+				{ "gtd", ":lua require('neotest').run.run({strategy = 'dap'})<cr>", { desc = "Debug nearest test" } },
 			},
 		},
 		-- Treesitter
@@ -193,20 +196,15 @@ require("lazy").setup({
 								["ic"] = "@class.inner",
 							},
 						},
-						lsp_interop = {
-							enable = true,
-							border = "none",
-							floating_preview_opts = {},
-							peek_definition_code = {
-								["<leader>df"] = "@function.outer",
-								["<leader>dF"] = "@class.outer",
-							},
-						},
 					},
 				})
 			end,
 			keys = {
-				{ "<leader>c", ":lua require('treesitter-context').toggle()<cr>" },
+				{
+					"<leader>c",
+					":lua require('treesitter-context').toggle()<cr>",
+					{ desc = "Treesitter context (toggle)" },
+				},
 			},
 		},
 		-- CodeCompanion
@@ -229,7 +227,7 @@ require("lazy").setup({
 				},
 			},
 			keys = {
-				{ "<a-c>", ":CodeCompanionChat toggle<cr>" },
+				{ "<a-c>", ":CodeCompanionChat toggle<cr>", { desc = "Chat Mode (toggle)" } },
 				{ "<a-c>", "<esc>:CodeCompanion ", mode = "i" },
 			},
 		},
@@ -263,7 +261,7 @@ require("lazy").setup({
 				},
 			},
 			keys = {
-				{ "<leader>k", ":lua require('kulala').scratchpad()<cr>" },
+				{ "<leader>k", ":lua require('kulala').scratchpad()<cr>", { desc = "Kulala scratchpad" } },
 			},
 		},
 		-- FZF-Lua
@@ -272,15 +270,15 @@ require("lazy").setup({
 			"ibhagwan/fzf-lua",
 			event = "VeryLazy",
 			keys = {
-				{ "<a-f>", ":FzfLua files<cr>" },
-				{ "<a-F>", ":FzfLua resume<cr>" },
-				{ "<a-b>", ":FzfLua builtin<cr>" },
-				{ "<leader>fg", ":FzfLua grep_project<cr>" },
-				{ "<leader>fb", ":FzfLua buffers<cr>" },
-				{ "<leader>fh", ":FzfLua helptags<cr>" },
-				{ "<leader>fc", ":FzfLua colorschemes<cr>" },
-				{ "<leader>gb", ":FzfLua git_branches<cr>" },
-				{ "<leader>gs", ":FzfLua git_status<cr>" },
+				{ "<a-f>", ":FzfLua files<cr>", { desc = "Find files" } },
+				{ "<a-F>", ":FzfLua resume<cr>", { desc = "Resume fuzzy find" } },
+				{ "<a-b>", ":FzfLua builtin<cr>", { desc = "FzF built ins" } },
+				{ "<leader>fg", ":FzfLua grep_project<cr>", { desc = "Find grep" } },
+				{ "<leader>fb", ":FzfLua buffers<cr>", { desc = "Find buffers" } },
+				{ "<leader>fh", ":FzfLua helptags<cr>", { desc = "Find helptags" } },
+				{ "<leader>fc", ":FzfLua colorschemes<cr>", { desc = "Find colorschemes" } },
+				{ "<leader>gb", ":FzfLua git_branches<cr>", { desc = "Find git branches" } },
+				{ "<leader>gs", ":FzfLua git_status<cr>", { desc = "Git status" } },
 			},
 			config = function()
 				local fzflua = require("fzf-lua")
@@ -337,7 +335,7 @@ require("lazy").setup({
 				},
 			},
 			keys = {
-				{ "<leader>fm", ":lua require('conform').format({ async = true })<cr>" },
+				{ "<leader>fm", ":lua require('conform').format({ async = true })<cr>", { desc = "Format buffer" } },
 			},
 		},
 		-- Live Preview (markdown)
@@ -346,7 +344,7 @@ require("lazy").setup({
 			"brianhuster/live-preview.nvim",
 			ft = { "markdown" },
 			keys = {
-				{ "<leader>lp", ":LivePreview start<cr>" },
+				{ "<leader>lp", ":LivePreview start<cr>", { desc = "Live preview (markdown)" } },
 			},
 		},
 		-- Oil
@@ -366,7 +364,7 @@ require("lazy").setup({
 				},
 			},
 			keys = {
-				{ "-", ":Oil<cr>" },
+				{ "-", ":Oil<cr>", { desc = "Oil" } },
 			},
 		},
 		-- Neogit
@@ -386,7 +384,7 @@ require("lazy").setup({
 				},
 			},
 			keys = {
-				{ "<a-n>", ":Neogit<cr>" },
+				{ "<a-n>", ":Neogit<cr>", { desc = "Neogit" } },
 			},
 		},
 		-- Diffview
@@ -402,8 +400,8 @@ require("lazy").setup({
 				enhanced_diff_hl = true,
 			},
 			keys = {
-				{ "<leader>dv", ":DiffviewOpen<cr>" },
-				{ "<leader>df", ":DiffviewFileHistory %<cr>" },
+				{ "<leader>dv", ":DiffviewOpen<cr>", { desc = "Diffview" } },
+				{ "<leader>df", ":DiffviewFileHistory %<cr>", { desc = "Diffview File history" } },
 			},
 		},
 	},
