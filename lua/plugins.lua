@@ -23,6 +23,32 @@ require("lazy").setup({
 		{ "maxmx03/solarized.nvim" },
 		{ "olimorris/onedarkpro.nvim" },
 		{ "folke/tokyonight.nvim" },
+		{
+			"shortcuts/no-neck-pain.nvim",
+			opts = {
+				width = 140,
+				autocmds = {
+					enableOnVimEnter = true,
+					enableOnTabEnter = true,
+				},
+				mappings = {
+					enabled = true,
+					toggle = "<leader>np",
+				},
+			},
+		},
+		{
+			"XXiaoA/atone.nvim",
+			cmd = "Atone",
+			opts = {
+				ui = {
+					compact = true,
+				},
+			},
+			keys = {
+				{ "<a-u>", ":Atone<cr>", { desc = "Undo Tree (atone)" } },
+			},
+		},
 		-- Debugmaster
 		-- ##########################################################
 		{
