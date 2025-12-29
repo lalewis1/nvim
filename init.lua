@@ -59,4 +59,4 @@ vim.filetype.add({
 	},
 })
 
-vim.cmd.colorscheme("tokyonight")
+vim.cmd.colorscheme("kanagawa")

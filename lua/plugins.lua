@@ -22,7 +22,9 @@ require("lazy").setup({
 		{ "kylechui/nvim-surround", event = "VeryLazy" },
 		{ "maxmx03/solarized.nvim" },
 		{ "olimorris/onedarkpro.nvim" },
+		{ "rebelot/kanagawa.nvim" },
 		{ "folke/tokyonight.nvim" },
+		{ "karb94/neoscroll.nvim", opts = {} },
 		{
 			"shortcuts/no-neck-pain.nvim",
 			opts = {
@@ -148,7 +150,11 @@ require("lazy").setup({
 				})
 			end,
 			keys = {
-				{ "<a-d>", ":lua require('debugmaster').mode.toggle()<cr>", { desc = "Debug Mode toggle" } },
+				{
+					"<a-d>",
+					":lua require('debugmaster').mode.toggle()<cr>:NoNeckPain<cr>",
+					{ desc = "Debug Mode toggle" },
+				},
 				{ "<leader>v", ":DapVirtualTextToggle<cr>", { desc = "Virtal text (toggle)" } },
 			},
 		},
@@ -299,6 +305,7 @@ require("lazy").setup({
 				{ "<a-f>", ":FzfLua files<cr>", { desc = "Find files" } },
 				{ "<a-F>", ":FzfLua resume<cr>", { desc = "Resume fuzzy find" } },
 				{ "<a-b>", ":FzfLua builtin<cr>", { desc = "FzF built ins" } },
+				{ "<leader>fo", ":FzfLua oldfiles<cr>", { desc = "Find old files" } },
 				{ "<leader>fg", ":FzfLua grep_project<cr>", { desc = "Find grep" } },
 				{ "<leader>fb", ":FzfLua buffers<cr>", { desc = "Find buffers" } },
 				{ "<leader>fh", ":FzfLua helptags<cr>", { desc = "Find helptags" } },
@@ -424,6 +431,17 @@ require("lazy").setup({
 			opts = {
 				use_icons = false,
 				enhanced_diff_hl = true,
+				keymaps = {
+					view = {
+						{ "n", "q", ":tabclose<cr>", { silent = true } },
+					},
+					file_panel = {
+						{ "n", "q", ":tabclose<cr>", { silent = true } },
+					},
+					file_history_panel = {
+						{ "n", "q", ":tabclose<cr>", { silent = true } },
+					},
+				},
 			},
 			keys = {
 				{ "<leader>dv", ":DiffviewOpen<cr>", { desc = "Diffview" } },
