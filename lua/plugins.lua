@@ -269,6 +269,12 @@ require("lazy").setup({
 			},
 			config = function()
 				local fzf = require("fzf-lua")
+				fzf.setup({
+          "borderless",
+					winopts = {
+						fullscreen = true,
+					},
+				})
 				fzf.register_ui_select()
 				-- Custom Taskfile Picker
 				local taskpicker = function()
