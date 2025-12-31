@@ -75,7 +75,7 @@ require("lazy").setup({
 						if args.data.enabled then
 							vim.api.nvim_set_hl(0, "SignColumn", { bg = "#3a5e3a" }) -- greenish
 						else
-							vim.api.nvim_set_hl(0, "SignColumn", { bg = orignal_signcolumn_g })
+							vim.api.nvim_set_hl(0, "SignColumn", { bg = orignal_signcolumn_bg })
 						end
 					end,
 				})
