@@ -266,13 +266,9 @@ require("lazy").setup({
 			},
 			config = function()
 				local fzf = require("fzf-lua")
-				fzf.setup({
-					"borderless",
-					winopts = {
-						fullscreen = true,
-					},
-				})
+
 				fzf.register_ui_select()
+
 				-- Custom Taskfile Picker
 				local taskpicker = function()
 					local json = vim.fn.system("task --list-all --json")
@@ -320,7 +316,7 @@ require("lazy").setup({
 						},
 					})
 				end
-				vim.keymap.set("n", "<leader>t", taskpicker)
+				vim.keymap.set("n", "<a-t>", taskpicker)
 			end,
 		},
 		-- blink.cmp
