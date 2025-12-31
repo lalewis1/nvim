@@ -269,6 +269,8 @@ require("lazy").setup({
 
 				fzf.register_ui_select()
 
+				fzf.setup({ "borderless" })
+
 				-- Custom Taskfile Picker
 				local taskpicker = function()
 					local json = vim.fn.system("task --list-all --json")
