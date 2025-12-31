@@ -18,13 +18,14 @@ require("lazy").setup({
 	spec = {
 		-- Miscellanous
 		-- ##########################################################
+		{ "neovim/nvim-lspconfig" },
 		{ "LunarVim/bigfile.nvim" },
 		{ "kylechui/nvim-surround", event = "VeryLazy" },
 		{ "maxmx03/solarized.nvim" },
 		{ "olimorris/onedarkpro.nvim" },
 		{ "rebelot/kanagawa.nvim" },
 		{ "folke/tokyonight.nvim" },
-		{ "karb94/neoscroll.nvim", opts = { duration_multiplier = 0.4} },
+		{ "karb94/neoscroll.nvim", opts = { duration_multiplier = 0.4 } },
 		{
 			"shortcuts/no-neck-pain.nvim",
 			opts = {
@@ -63,65 +64,18 @@ require("lazy").setup({
 			config = function()
 				require("nvim-dap-virtual-text").setup({})
 
-				-- debugmaster set darkened background with green sidebar while
-				-- debug mode is active.
-				local function hex_to_rgb(hex)
-					hex = hex:gsub("#", "")
-					return tonumber(hex:sub(1, 2), 16), tonumber(hex:sub(3, 4), 16), tonumber(hex:sub(5, 6), 16)
-				end
-
-				local function rgb_to_hex(r, g, b)
-					return string.format("#%02x%02x%02x", r, g, b)
-				end
-
-				local function darken(hex_color, factor)
-					local r, g, b = hex_to_rgb(hex_color)
-					r = math.floor(r * factor)
-					g = math.floor(g * factor)
-					b = math.floor(b * factor)
-					return rgb_to_hex(r, g, b)
-				end
-
-				local original_bgs = {}
-
-				local highlight_groups = { "Normal", "NormalNC", "SignColumn" }
-
+				local orignal_signcolumn_bg = ""
 				vim.api.nvim_create_autocmd("User", {
 					pattern = "DebugModeChanged",
 					callback = function(args)
-						-- Save original backgrounds
-						for _, group in ipairs(highlight_groups) do
-							local hl = vim.api.nvim_get_hl(0, { name = group, link = false })
-							if not original_bgs[group] and hl.bg then
-								original_bgs[group] = string.format("#%06x", hl.bg)
-							elseif not original_bgs[group] then
-								-- fallback: use Normal bg
-								local normal_hl = vim.api.nvim_get_hl(0, { name = "Normal", link = false })
-								if normal_hl.bg then
-									original_bgs[group] = string.format("#%06x", normal_hl.bg)
-								end
-							end
+						local sc_hl = vim.api.nvim_get_hl(0, { name = "SignColumn", link = false })
+						if not orignal_signcolumn_bg and sc_hl.bg then
+							orignal_signcolumn_bg = string.format("#%06x", sc_hl.bg)
 						end
 						if args.data.enabled then
-							for _, group in ipairs(highlight_groups) do
-								if group == "SignColumn" then
-									-- Set a greenish sign column background
-									vim.api.nvim_set_hl(0, group, { bg = "#3a5e3a" }) -- greenish
-								else
-									local bg = original_bgs[group]
-									if bg then
-										local new_bg = darken(bg, 0.8)
-										vim.api.nvim_set_hl(0, group, { bg = new_bg })
-									end
-								end
-							end
+							vim.api.nvim_set_hl(0, "SignColumn", { bg = "#3a5e3a" }) -- greenish
 						else
-							for _, group in ipairs(highlight_groups) do
-								local bg = original_bgs[group]
-								if bg then
-									vim.api.nvim_set_hl(0, group, { bg = bg })
-								end
-							end
+							vim.api.nvim_set_hl(0, "SignColumn", { bg = orignal_signcolumn_g })
 						end
 					end,
 				})
@@ -314,8 +268,56 @@ require("lazy").setup({
 				{ "<leader>gs", ":FzfLua git_status<cr>", { desc = "Git status" } },
 			},
 			config = function()
-				local fzflua = require("fzf-lua")
-				fzflua.register_ui_select()
+				local fzf = require("fzf-lua")
+				fzf.register_ui_select()
+				-- Custom Taskfile Picker
+				local taskpicker = function()
+					local json = vim.fn.system("task --list-all --json")
+					if vim.v.shell_error ~= 0 or not json or json == "" then
+						vim.notify(
+							"Failed to get task data (is 'task' installed and Taskfile present?)",
+							vim.log.levels.ERROR
+						)
+						return
+					end
+					local data = vim.fn.json_decode(json)
+					if type(data) ~= "table" or not data.tasks or type(data.tasks) ~= "table" then
+						vim.notify("No tasks found in Taskfile", vim.log.levels.ERROR)
+						return
+					end
+					local items = {}
+					local task_map = {}
+					for _, task in ipairs(data.tasks) do
+						items[#items + 1] = task.name
+						task_map[task.name] = {
+							name = task.name,
+							summary = "task " .. task.name .. " --summary",
+						}
+					end
+					fzf.fzf_exec(items, {
+						prompt = "Run a task> ",
+						preview = function(selected)
+							local picked = vim.trim(selected[1])
+							local task = task_map[picked]
+							if not task then
+								return "(Task not found)"
+							end
+							return vim.fn.system(task.summary)
+						end,
+						actions = {
+							["default"] = function(selected)
+								local picked = selected[1]
+								local task = task_map[picked]
+								if not task then
+									return
+								end
+								vim.cmd("tabnew")
+								vim.cmd("terminal task " .. task.name)
+							end,
+						},
+					})
+				end
+				vim.keymap.set("n", "<leader>t", taskpicker)
 			end,
 		},
 		-- blink.cmp
@@ -425,9 +427,6 @@ require("lazy").setup({
 		{
 			"sindrets/diffview.nvim",
 			event = "VeryLazy",
-			setup = function()
-				vim.opt.fillchars:append({ diff = "/" })
-			end,
 			opts = {
 				use_icons = false,
 				enhanced_diff_hl = true,
