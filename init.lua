@@ -14,6 +14,7 @@ vim.opt.shiftwidth = 2
 vim.opt.expandtab = true
 vim.opt.splitbelow = true
 vim.opt.splitright = true
+vim.opt.fillchars:append({ diff = "/" })
 
 require("plugins")
 
