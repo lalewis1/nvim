@@ -131,13 +131,10 @@ require("lazy").setup({
 				})
 			end,
 			keys = {
-				{
-					"<a-t>",
-					":lua require('neotest').summary.toggle(); require('neotest').output_panel.toggle()<cr>",
-					{ desc = "Test Mode (toggle)" },
-				},
-				{ "gtn", ":lua require('neotest').run.run()<cr>", { desc = "Test nearest test" } },
-				{ "gtd", ":lua require('neotest').run.run({strategy = 'dap'})<cr>", { desc = "Debug nearest test" } },
+				{ "<leader>ts", ":lua require('neotest').summary.toggle()<cr>" },
+				{ "<leader>to", ":lua require('neotest').output_panel.toggle()<cr>" },
+				{ "<leader>tn", ":lua require('neotest').run.run()<cr>", { desc = "Test nearest" } },
+				{ "<leader>td", ":lua require('neotest').run.run({strategy = 'dap'})<cr>", { desc = "Debug nearest" } },
 			},
 		},
 		-- Treesitter
@@ -270,7 +267,7 @@ require("lazy").setup({
 			config = function()
 				local fzf = require("fzf-lua")
 				fzf.setup({
-          "borderless",
+					"borderless",
 					winopts = {
 						fullscreen = true,
 					},
