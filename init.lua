@@ -14,6 +14,7 @@ vim.opt.modeline = false
 vim.opt.signcolumn = "yes"
 vim.opt.wildignorecase = true
 vim.opt.scrolloff = 2
+vim.opt.winborder = "single"
 
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "

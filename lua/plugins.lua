@@ -24,7 +24,7 @@ require("lazy").setup({
 		{ "olimorris/onedarkpro.nvim" },
 		{ "rebelot/kanagawa.nvim" },
 		{ "folke/tokyonight.nvim" },
-		{ "karb94/neoscroll.nvim", opts = {} },
+		{ "karb94/neoscroll.nvim", opts = { duration_multiplier = 0.4} },
 		{
 			"shortcuts/no-neck-pain.nvim",
 			opts = {
