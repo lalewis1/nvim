@@ -1,6 +1,8 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
+vim.g.python3_host_prog = "$HOME/virtualenvs/nvim/bin/python3"
+
 vim.opt.undofile = true
 vim.opt.smartcase = true
 vim.opt.ignorecase = true
@@ -15,6 +17,8 @@ vim.opt.expandtab = true
 vim.opt.splitbelow = true
 vim.opt.splitright = true
 vim.opt.fillchars:append({ diff = "/" })
+vim.opt.confirm = true
+vim.opt.scrolloff = 1
 
 require("plugins")
 
@@ -24,10 +28,17 @@ vim.keymap.set("n", "<leader>z", ":set wrap!<cr>", opts)
 vim.keymap.set("n", "q", ":bd<cr>", opts)
 vim.keymap.set("n", "<a-q>", ":qa<cr>", opts)
 vim.keymap.set("n", "Q", "q", opts)
+
+-- Window movement / resizing
+vim.keymap.set("n", "<c-h>", "<c-w>h", opts)
+vim.keymap.set("n", "<c-j>", "<c-w>j", opts)
+vim.keymap.set("n", "<c-k>", "<c-w>k", opts)
+vim.keymap.set("n", "<c-l>", "<c-w>l", opts)
 vim.keymap.set("n", "<a-h>", "2<c-w><", opts)
 vim.keymap.set("n", "<a-j>", "2<c-w>-", opts)
 vim.keymap.set("n", "<a-k>", "2<c-w>+", opts)
 vim.keymap.set("n", "<a-l>", "2<c-w>>", opts)
+
 vim.keymap.set("n", "<esc>", ":nohlsearch<cr>", opts)
 vim.keymap.set("t", "<esc>", "<c-\\><c-n>", opts)
 vim.keymap.set("n", "[t", ":tabprevious<cr>", opts)

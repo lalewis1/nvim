@@ -20,7 +20,7 @@ require("lazy").setup({
 		-- ##########################################################
 		{ "neovim/nvim-lspconfig" },
 		{ "LunarVim/bigfile.nvim" },
-		{ "kylechui/nvim-surround", event = "VeryLazy" },
+		{ "kylechui/nvim-surround", event = "VeryLazy", opts = {} },
 		{ "maxmx03/solarized.nvim" },
 		{ "olimorris/onedarkpro.nvim" },
 		{ "rebelot/kanagawa.nvim" },
@@ -49,7 +49,7 @@ require("lazy").setup({
 				},
 			},
 			keys = {
-				{ "<a-u>", ":Atone<cr>", { desc = "Undo Tree (atone)" } },
+				{ "<a-u>", ":Atone<cr>", { desc = "Undo Tree (atone)", silent = true } },
 			},
 		},
 		-- Debugmaster
@@ -107,9 +107,9 @@ require("lazy").setup({
 				{
 					"<a-d>",
 					":lua require('debugmaster').mode.toggle()<cr>:NoNeckPain<cr>",
-					{ desc = "Debug Mode toggle" },
+					{ desc = "Debug Mode toggle", silent = true },
 				},
-				{ "<leader>v", ":DapVirtualTextToggle<cr>", { desc = "Virtal text (toggle)" } },
+				{ "<leader>v", ":DapVirtualTextToggle<cr>", { desc = "Virtal text (toggle)", silent = true } },
 			},
 		},
 		-- Neotest
@@ -131,10 +131,10 @@ require("lazy").setup({
 				})
 			end,
 			keys = {
-				{ "<leader>ts", ":lua require('neotest').summary.toggle()<cr>" },
-				{ "<leader>to", ":lua require('neotest').output_panel.toggle()<cr>" },
-				{ "<leader>tn", ":lua require('neotest').run.run()<cr>", { desc = "Test nearest" } },
-				{ "<leader>td", ":lua require('neotest').run.run({strategy = 'dap'})<cr>", { desc = "Debug nearest" } },
+				{ "<leader>ts", ":lua require('neotest').summary.toggle()<cr>", { desc = "Toggle test summary", silent = true } },
+				{ "<leader>to", ":lua require('neotest').output_panel.toggle()<cr>", { desc = "Toggle test output", silent = true } },
+				{ "<leader>tn", ":lua require('neotest').run.run()<cr>", { desc = "Test nearest", silent = true } },
+				{ "<leader>td", ":lua require('neotest').run.run({strategy = 'dap'})<cr>", { desc = "Debug nearest", silent = true } },
 			},
 		},
 		-- Treesitter
@@ -186,7 +186,7 @@ require("lazy").setup({
 				{
 					"<leader>c",
 					":lua require('treesitter-context').toggle()<cr>",
-					{ desc = "Treesitter context (toggle)" },
+					{ desc = "Treesitter context (toggle)", silent = true },
 				},
 			},
 		},
@@ -210,7 +210,7 @@ require("lazy").setup({
 				},
 			},
 			keys = {
-				{ "<a-c>", ":CodeCompanionChat toggle<cr>", { desc = "Chat Mode (toggle)" } },
+				{ "<a-c>", ":CodeCompanionChat toggle<cr>", { desc = "Chat Mode (toggle)", silent = true } },
 				{ "<a-c>", "<esc>:CodeCompanion ", mode = "i" },
 			},
 		},
@@ -244,7 +244,11 @@ require("lazy").setup({
 				},
 			},
 			keys = {
-				{ "<leader>k", ":lua require('kulala').scratchpad()<cr>", { desc = "Kulala scratchpad" } },
+				{
+					"<leader>k",
+					":lua require('kulala').scratchpad()<cr>",
+					{ desc = "Kulala scratchpad", silent = true },
+				},
 			},
 		},
 		-- FZF-Lua
@@ -253,16 +257,16 @@ require("lazy").setup({
 			"ibhagwan/fzf-lua",
 			event = "VeryLazy",
 			keys = {
-				{ "<a-f>", ":FzfLua files<cr>", { desc = "Find files" } },
-				{ "<a-F>", ":FzfLua resume<cr>", { desc = "Resume fuzzy find" } },
-				{ "<a-b>", ":FzfLua builtin<cr>", { desc = "FzF built ins" } },
-				{ "<leader>fo", ":FzfLua oldfiles<cr>", { desc = "Find old files" } },
-				{ "<leader>fg", ":FzfLua grep_project<cr>", { desc = "Find grep" } },
-				{ "<leader>fb", ":FzfLua buffers<cr>", { desc = "Find buffers" } },
-				{ "<leader>fh", ":FzfLua helptags<cr>", { desc = "Find helptags" } },
-				{ "<leader>fc", ":FzfLua colorschemes<cr>", { desc = "Find colorschemes" } },
-				{ "<leader>gb", ":FzfLua git_branches<cr>", { desc = "Find git branches" } },
-				{ "<leader>gs", ":FzfLua git_status<cr>", { desc = "Git status" } },
+				{ "<a-f>", ":FzfLua files<cr>", { desc = "Find files", silent = true } },
+				{ "<a-F>", ":FzfLua resume<cr>", { desc = "Resume fuzzy find", silent = true } },
+				{ "<a-b>", ":FzfLua builtin<cr>", { desc = "FzF built ins", silent = true } },
+				{ "<leader>fo", ":FzfLua oldfiles<cr>", { desc = "Find old files", silent = true } },
+				{ "<leader>fg", ":FzfLua grep_project<cr>", { desc = "Find grep", silent = true } },
+				{ "<leader>fb", ":FzfLua buffers<cr>", { desc = "Find buffers", silent = true } },
+				{ "<leader>fh", ":FzfLua helptags<cr>", { desc = "Find helptags", silent = true } },
+				{ "<leader>fc", ":FzfLua colorschemes<cr>", { desc = "Find colorschemes", silent = true } },
+				{ "<leader>gb", ":FzfLua git_branches<cr>", { desc = "Find git branches", silent = true } },
+				{ "<leader>gs", ":FzfLua git_status<cr>", { desc = "Git status", silent = true } },
 			},
 			config = function()
 				local fzf = require("fzf-lua")
@@ -318,7 +322,78 @@ require("lazy").setup({
 						},
 					})
 				end
-				vim.keymap.set("n", "<a-t>", taskpicker)
+				vim.keymap.set("n", "<a-t>", taskpicker, { desc = "Find a task", silent = true })
+
+				-- custom prefix/namespace picker
+				local prefixpicker = function()
+					local function keys(tbl)
+						local keyset = {}
+						for k in pairs(tbl) do
+							table.insert(keyset, k)
+						end
+						return keyset
+					end
+					local map = {
+						["brick"] = "https://brickschema.org/schema/Brick#",
+						["csvw"] = "http://www.w3.org/ns/csvw#",
+						["dc"] = "http://purl.org/dc/elements/1.1/",
+						["dcat"] = "http://www.w3.org/ns/dcat#",
+						["dcmitype"] = "http://purl.org/dc/dcmitype/",
+						["dcterms"] = "http://purl.org/dc/terms/",
+						["dcam"] = "http://purl.org/dc/dcam/",
+						["doap"] = "http://usefulinc.com/ns/doap#",
+						["foaf"] = "http://xmlns.com/foaf/0.1/",
+						["geo"] = "http://www.opengis.net/ont/geosparql#",
+						["odrl"] = "http://www.w3.org/ns/odrl/2/",
+						["org"] = "http://www.w3.org/ns/org#",
+						["prof"] = "http://www.w3.org/ns/dx/prof/",
+						["prov"] = "http://www.w3.org/ns/prov#",
+						["qb"] = "http://purl.org/linked-data/cube#",
+						["schema"] = "https://schema.org/",
+						["sh"] = "http://www.w3.org/ns/shacl#",
+						["skos"] = "http://www.w3.org/2004/02/skos/core#",
+						["sosa"] = "http://www.w3.org/ns/sosa/",
+						["ssn"] = "http://www.w3.org/ns/ssn/",
+						["time"] = "http://www.w3.org/2006/time#",
+						["vann"] = "http://purl.org/vocab/vann/",
+						["void"] = "http://rdfs.org/ns/void#",
+						["wgs"] = "https://www.w3.org/2003/01/geo/wgs84_pos#",
+						["owl"] = "http://www.w3.org/2002/07/owl#",
+						["rdf"] = "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+						["rdfs"] = "http://www.w3.org/2000/01/rdf-schema#",
+						["xsd"] = "http://www.w3.org/2001/XMLSchema#",
+						["xml"] = "http://www.w3.org/XML/1998/namespace",
+						["prefix"] = "http://qudt.org/vocab/prefix/",
+						["qkdv"] = "http://qudt.org/vocab/dimensionvector/",
+						["quantitykind"] = "http://qudt.org/vocab/quantitykind/",
+						["qudt"] = "http://qudt.org/schema/qudt/",
+						["si-unit"] = "https://si-digital-framework.org/SI/units/",
+						["sou"] = "http://qudt.org/vocab/sou/",
+						["unit"] = "http://qudt.org/vocab/unit/",
+						["vaem"] = "http://www.linkedmodel.org/schema/vaem#",
+						["voag"] = "http://voag.linkedmodel.org/schema/voag#",
+						["rico"] = "https://www.ica.org/standards/RiC/ontology#",
+					}
+					fzf.fzf_exec(keys(map), {
+						prompt = "Expand prefix> ",
+						preview = function(selected)
+							local picked = vim.trim(selected[1])
+							return map[picked]
+						end,
+						actions = {
+							["default"] = function(selected)
+								local picked = vim.trim(selected[1])
+								vim.api.nvim_put(
+									{ "@prefix " .. picked .. ": <" .. map[picked] .. "> ." },
+									"l",
+									true,
+									true
+								)
+							end,
+						},
+					})
+				end
+				vim.keymap.set({ "n", "v", "i", "x" }, "<a-x>", prefixpicker, { desc = "Find a prefix", silent = true })
 			end,
 		},
 		-- blink.cmp
@@ -333,7 +408,7 @@ require("lazy").setup({
 				cmdline = { enabled = false },
 				completion = { documentation = { auto_show = true } },
 				sources = {
-					default = { "lsp", "path", "snippets", "buffer" },
+					default = { "lsp", "path", "snippets", "buffer", "omni", "cmdline" },
 				},
 			},
 			opts_extend = { "sources.default" },
@@ -354,6 +429,11 @@ require("lazy").setup({
 						args = { "$FILENAME" },
 						stdin = true,
 					},
+					kurra = {
+						command = "kurra",
+						args = { "file", "reformat", "-f", "turtle", "$FILENAME" },
+						stdin = false,
+					},
 				},
 				formatters_by_ft = {
 					python = { "black", "isort" },
@@ -368,10 +448,15 @@ require("lazy").setup({
 					vue = { "prettier" },
 					sparql = { "sparql_fmt" },
 					sh = { "shfmt" },
+					turtle = { "kurra" },
 				},
 			},
 			keys = {
-				{ "<leader>fm", ":lua require('conform').format({ async = true })<cr>", { desc = "Format buffer" } },
+				{
+					"<leader>fm",
+					":lua require('conform').format({ async = true })<cr>",
+					{ desc = "Format buffer", silent = true },
+				},
 			},
 		},
 		-- Live Preview (markdown)
@@ -380,7 +465,7 @@ require("lazy").setup({
 			"brianhuster/live-preview.nvim",
 			ft = { "markdown" },
 			keys = {
-				{ "<leader>lp", ":LivePreview start<cr>", { desc = "Live preview (markdown)" } },
+				{ "<leader>lp", ":LivePreview start<cr>", { desc = "Live preview (markdown)", silent = true } },
 			},
 		},
 		-- Oil
@@ -391,16 +476,24 @@ require("lazy").setup({
 			opts = {
 				default_file_explorer = true,
 				keymaps = {
-					["gs"] = function()
-						require("oil").set_columns({ "mtime", "permissions", "size" })
-					end,
-					["gh"] = function()
-						require("oil").set_columns({})
-					end,
+					["gs"] = {
+						callback = function()
+							require("oil").set_columns({ "mtime", "permissions", "size" })
+						end,
+						mode = "n",
+						desc = "Long listing (show)",
+					},
+					["gh"] = {
+						callback = function()
+							require("oil").set_columns({})
+						end,
+						mode = "n",
+						desc = "Long listing (hide)",
+					},
 				},
 			},
 			keys = {
-				{ "-", ":Oil<cr>", { desc = "Oil" } },
+				{ "-", ":Oil<cr>", { desc = "Oil", silent = true } },
 			},
 		},
 		-- Neogit
@@ -420,7 +513,7 @@ require("lazy").setup({
 				},
 			},
 			keys = {
-				{ "<a-n>", ":Neogit<cr>", { desc = "Neogit" } },
+				{ "<a-n>", ":Neogit<cr>", { desc = "Neogit", silent = true } },
 			},
 		},
 		-- Diffview
@@ -444,8 +537,8 @@ require("lazy").setup({
 				},
 			},
 			keys = {
-				{ "<leader>dv", ":DiffviewOpen<cr>", { desc = "Diffview" } },
-				{ "<leader>df", ":DiffviewFileHistory %<cr>", { desc = "Diffview File history" } },
+				{ "<leader>dv", ":DiffviewOpen<cr>", { desc = "Diffview", silent = true } },
+				{ "<leader>df", ":DiffviewFileHistory %<cr>", { desc = "Diffview File history", silent = true } },
 			},
 		},
 	},
