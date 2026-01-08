@@ -29,6 +29,10 @@ vim.keymap.set("n", "q", ":bd<cr>", opts)
 vim.keymap.set("n", "<a-q>", ":qa<cr>", opts)
 vim.keymap.set("n", "Q", "q", opts)
 
+vim.keymap.set("n", "<a-a>", "ggVG", opts)
+vim.keymap.set({ "n", "v", "x" }, "<leader>y", '"+y', opts)
+vim.keymap.set("n", "<leader>Y", '"+Y', opts)
+
 -- Window movement / resizing
 vim.keymap.set("n", "<c-h>", "<c-w>h", opts)
 vim.keymap.set("n", "<c-j>", "<c-w>j", opts)
@@ -46,6 +50,13 @@ vim.keymap.set("n", "]t", ":tabnext<cr>", opts)
 vim.keymap.set("n", "<a-r>", ":belowright 12split | term<cr>i", opts)
 vim.keymap.set("n", "<a-p>", ":tabnew | term python<cr>i", opts)
 vim.keymap.set("n", "grq", ":lua vim.diagnostic.setqflist()<cr>:copen<cr>", opts)
+
+vim.api.nvim_create_autocmd("TextYankPost", {
+    desc = "Highlight yanked text",
+    callback = function()
+        vim.highlight.on_yank({ higroup = "IncSearch", timeout = 200 })
+    end,
+})
 
 vim.diagnostic.config({ virtual_text = true })
 vim.lsp.enable({

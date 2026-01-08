@@ -431,7 +431,7 @@ require("lazy").setup({
 					},
 					kurra = {
 						command = "kurra",
-						args = { "file", "reformat", "-f", "turtle", "$FILENAME" },
+						args = { "file", "reformat", "-f", "longturtle", "$FILENAME" },
 						stdin = false,
 					},
 				},
