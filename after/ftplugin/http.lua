@@ -1,4 +1,6 @@
 local kulala = require("kulala")
+local kulauth = require("kulala.ui.auth_manager")
+
 local opts = { buffer = true, nowait = true, silent = true }
 vim.keymap.set("n", "<leader>i", kulala.inspect, opts)
 vim.keymap.set("n", "<leader>r", kulala.run, opts)
@@ -7,5 +9,6 @@ vim.keymap.set("n", "<leader>t", kulala.toggle_view, opts)
 vim.keymap.set("n", "<leader>e", kulala.set_selected_env, opts)
 vim.keymap.set("n", "<leader>c", kulala.copy, opts)
 vim.keymap.set("n", "<leader>p", kulala.from_curl, opts)
+vim.keymap.set("n", "<leader>m", kulauth.open_auth_config, opts)
 vim.keymap.set("n", "[[", kulala.jump_prev, opts)
 vim.keymap.set("n", "]]", kulala.jump_next, opts)

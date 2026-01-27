@@ -131,10 +131,22 @@ require("lazy").setup({
 				})
 			end,
 			keys = {
-				{ "<leader>ts", ":lua require('neotest').summary.toggle()<cr>", { desc = "Toggle test summary", silent = true } },
-				{ "<leader>to", ":lua require('neotest').output_panel.toggle()<cr>", { desc = "Toggle test output", silent = true } },
+				{
+					"<leader>ts",
+					":lua require('neotest').summary.toggle()<cr>",
+					{ desc = "Toggle test summary", silent = true },
+				},
+				{
+					"<leader>to",
+					":lua require('neotest').output_panel.toggle()<cr>",
+					{ desc = "Toggle test output", silent = true },
+				},
 				{ "<leader>tn", ":lua require('neotest').run.run()<cr>", { desc = "Test nearest", silent = true } },
-				{ "<leader>td", ":lua require('neotest').run.run({strategy = 'dap'})<cr>", { desc = "Debug nearest", silent = true } },
+				{
+					"<leader>td",
+					":lua require('neotest').run.run({strategy = 'dap'})<cr>",
+					{ desc = "Debug nearest", silent = true },
+				},
 			},
 		},
 		-- Treesitter
@@ -434,6 +446,11 @@ require("lazy").setup({
 						args = { "file", "reformat", "-f", "longturtle", "$FILENAME" },
 						stdin = false,
 					},
+					hurl = {
+						command = "hurl",
+						args = { "--test", "$FILENAME" },
+						stdin = false,
+					},
 				},
 				formatters_by_ft = {
 					python = { "black", "isort" },
@@ -449,6 +466,7 @@ require("lazy").setup({
 					sparql = { "sparql_fmt" },
 					sh = { "shfmt" },
 					turtle = { "kurra" },
+					hurl = { "hurl" },
 				},
 			},
 			keys = {
