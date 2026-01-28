@@ -52,10 +52,10 @@ vim.keymap.set("n", "<a-p>", ":tabnew | term python<cr>i", opts)
 vim.keymap.set("n", "grq", ":lua vim.diagnostic.setqflist()<cr>:copen<cr>", opts)
 
 vim.api.nvim_create_autocmd("TextYankPost", {
-    desc = "Highlight yanked text",
-    callback = function()
-        vim.highlight.on_yank({ higroup = "IncSearch", timeout = 200 })
-    end,
+	desc = "Highlight yanked text",
+	callback = function()
+		vim.highlight.on_yank({ higroup = "IncSearch", timeout = 200 })
+	end,
 })
 
 vim.diagnostic.config({ virtual_text = true })
@@ -76,6 +76,7 @@ vim.lsp.enable({
 	"tailwindcss",
 	"turtle",
 	"vtsls",
+	"yamlls",
 })
 
 vim.filetype.add({
