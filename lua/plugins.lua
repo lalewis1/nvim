@@ -376,6 +376,7 @@ require("lazy").setup({
 						["rdf"] = "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
 						["rdfs"] = "http://www.w3.org/2000/01/rdf-schema#",
 						["rico"] = "https://www.ica.org/standards/RiC/ontology#",
+						["sdo"] = "https://schema.org/",
 						["schema"] = "https://schema.org/",
 						["sh"] = "http://www.w3.org/ns/shacl#",
 						["si-unit"] = "https://si-digital-framework.org/SI/units/",
