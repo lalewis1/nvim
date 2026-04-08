@@ -160,7 +160,7 @@ require("lazy").setup({
 			event = "VeryLazy",
 			config = function()
 				vim.o.foldmethod = "expr"
-				vim.o.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+				vim.o.foldexpr = "nvim_treesitter#foldexpr()"
 				vim.o.foldlevel = 99
 
 				vim.api.nvim_set_hl(0, "TreesitterContextLineNumberBottom", { underline = true, sp = "Grey" })
@@ -172,6 +172,8 @@ require("lazy").setup({
 				require("nvim-treesitter.configs").setup({
 					highlight = { enable = true },
 					indent = { enable = true },
+          auto_install = true,
+          ignore_install = { "csv" },
 					incremental_selection = {
 						enable = true,
 						keymaps = {
@@ -214,7 +216,7 @@ require("lazy").setup({
 			opts = {
 				interactions = {
 					chat = {
-						adapter = "openai",
+						adapter = "mistral_vibe",
 					},
 					inline = {
 						adapter = "openai",
@@ -285,7 +287,7 @@ require("lazy").setup({
 
 				fzf.register_ui_select()
 
-				fzf.setup({ "borderless" })
+				fzf.setup({ "border-fused" })
 
 				-- Custom Taskfile Picker
 				local taskpicker = function()
