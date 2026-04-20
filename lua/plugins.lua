@@ -153,56 +153,39 @@ require("lazy").setup({
 		-- ##########################################################
 		{
 			"nvim-treesitter/nvim-treesitter",
-			dependencies = {
-				"nvim-treesitter/nvim-treesitter-textobjects",
-				"nvim-treesitter/nvim-treesitter-context",
-			},
-			event = "VeryLazy",
+			branch = "main",
+			lazy = false,
+			build = ":TSUpdate",
 			config = function()
 				vim.o.foldmethod = "expr"
-				vim.o.foldexpr = "nvim_treesitter#foldexpr()"
+				vim.o.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 				vim.o.foldlevel = 99
-
-				vim.api.nvim_set_hl(0, "TreesitterContextLineNumberBottom", { underline = true, sp = "Grey" })
-				vim.api.nvim_set_hl(0, "TreesitterContextBottom", { underline = true, sp = "Grey" })
-				require("treesitter-context").setup({
-					enable = false,
-				})
-
-				require("nvim-treesitter.configs").setup({
-					highlight = { enable = true },
-					indent = { enable = true },
-          auto_install = true,
-          ignore_install = { "csv" },
-					incremental_selection = {
-						enable = true,
-						keymaps = {
-							init_selection = "<cr>",
-							node_incremental = "<cr>",
-							node_decremental = "<space>",
-						},
+				vim.api.nvim_create_autocmd("FileType", {
+					pattern = {
+						"python",
+						"markdown",
+						"yaml",
+						"lua",
+						"html",
+						"css",
+						"javascript",
+						"typescript",
+						"vue",
+						"toml",
+						"json",
+						"dockerfile",
+						"terraform",
+						"bicep",
+						"sparql",
+						"turtle",
+						"http",
+						"hurl",
 					},
-					textobjects = {
-						select = {
-							enable = true,
-							lookahead = true,
-							keymaps = {
-								["af"] = "@function.outer",
-								["if"] = "@function.inner",
-								["ac"] = "@class.outer",
-								["ic"] = "@class.inner",
-							},
-						},
-					},
+					callback = function()
+						vim.treesitter.start()
+					end,
 				})
 			end,
-			keys = {
-				{
-					"<leader>c",
-					":lua require('treesitter-context').toggle()<cr>",
-					{ desc = "Treesitter context (toggle)", silent = true },
-				},
-			},
 		},
 		-- CodeCompanion
 		-- ##########################################################
@@ -216,7 +199,7 @@ require("lazy").setup({
 			opts = {
 				interactions = {
 					chat = {
-						adapter = "mistral_vibe",
+						adapter = "openai",
 					},
 					inline = {
 						adapter = "openai",
@@ -255,13 +238,6 @@ require("lazy").setup({
 					["text/csv"] = {
 						ft = "csv",
 					},
-				},
-			},
-			keys = {
-				{
-					"<leader>k",
-					":lua require('kulala').scratchpad()<cr>",
-					{ desc = "Kulala scratchpad", silent = true },
 				},
 			},
 		},
