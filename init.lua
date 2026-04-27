@@ -21,7 +21,6 @@ require("plugins")
 local opts = { silent = true, noremap = true }
 vim.keymap.set("n", "<leader>w", ":w<cr>", opts)
 vim.keymap.set("n", "<leader>z", ":set wrap!<cr>", opts)
-vim.keymap.set("n", "q", ":bd<cr>", opts)
 vim.keymap.set("n", "<a-q>", ":qa<cr>", opts)
 vim.keymap.set("n", "Q", "q", opts)
 
@@ -38,6 +37,28 @@ vim.keymap.set("n", "<a-h>", "2<c-w><", opts)
 vim.keymap.set("n", "<a-j>", "2<c-w>-", opts)
 vim.keymap.set("n", "<a-k>", "2<c-w>+", opts)
 vim.keymap.set("n", "<a-l>", "2<c-w>>", opts)
+
+-- Buffer closing / quitting
+vim.api.nvim_create_autocmd("BufWinEnter", {
+  callback = function()
+    local bufnr = vim.api.nvim_get_current_buf()
+    local name = vim.api.nvim_buf_get_name(bufnr)
+    local bufs = vim.tbl_filter(
+      function(b)
+        -- Only count listed and loaded buffers (use vim.bo[].buflisted)
+        return vim.api.nvim_buf_is_loaded(b) and vim.bo[b].buflisted
+      end,
+      vim.api.nvim_list_bufs()
+    )
+    local is_last = #bufs == 1
+    local is_unnamed = name == ""
+    if is_last and is_unnamed then
+      vim.keymap.set("n", "q", "<C-w>q", { buffer = bufnr, noremap = true, silent = true })
+    else
+      vim.keymap.set("n", "q", ":bd<CR>", { buffer = bufnr, noremap = true, silent = true })
+    end
+  end
+})
 
 vim.keymap.set("n", "<esc>", ":nohlsearch<cr>", opts)
 vim.keymap.set("t", "<esc>", "<c-\\><c-n>", opts)
