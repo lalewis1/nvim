@@ -466,15 +466,6 @@ require("lazy").setup({
 				},
 			},
 		},
-		-- Live Preview (markdown)
-		-- ##########################################################
-		{
-			"brianhuster/live-preview.nvim",
-			ft = { "markdown" },
-			keys = {
-				{ "<leader>lp", ":LivePreview start<cr>", { desc = "Live preview (markdown)", silent = true } },
-			},
-		},
 		-- Oil
 		-- ##########################################################
 		{
@@ -529,7 +520,7 @@ require("lazy").setup({
 			"sindrets/diffview.nvim",
 			event = "VeryLazy",
 			opts = {
-				use_icons = false,
+				use_icons = true,
 				enhanced_diff_hl = true,
 				keymaps = {
 					view = {
@@ -546,6 +537,89 @@ require("lazy").setup({
 			keys = {
 				{ "<leader>dv", ":DiffviewOpen<cr>", { desc = "Diffview", silent = true } },
 				{ "<leader>df", ":DiffviewFileHistory %<cr>", { desc = "Diffview File history", silent = true } },
+			},
+		},
+		-- Markdown Render / Preview
+		-- ##########################################################
+		{
+			"MeanderingProgrammer/render-markdown.nvim",
+			dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" }, -- if you prefer nvim-web-devicons
+			opts = {},
+		},
+		{
+			"brianhuster/live-preview.nvim",
+			ft = { "markdown" },
+			keys = {
+				{ "<leader>lp", ":LivePreview start<cr>", { desc = "Live preview (markdown)", silent = true } },
+			},
+		},
+		-- MeowReview
+		-- ##########################################################
+		{
+			"retran/meow.review.nvim",
+			dependencies = { "MunifTanjim/nui.nvim" },
+			event = "VeryLazy",
+			config = function()
+				require("meow.review").setup({
+					-- Your custom configuration goes here
+					default_exporter = "vibetmux",
+					-- prompt_preamble = "",
+					-- context_lines = 1,
+				})
+				require("meow.review").register_exporter("vibetmux", function(markdown, _root)
+					local handle = io.popen("tmux list-panes -F '#{pane_id} #{pane_title}'")
+					local result = handle:read("*a")
+					handle:close()
+					local vibe_pane_id = nil
+					for pane_id, title in result:gmatch("(%S+) (%S+)") do
+						if title:find("Vibe") then
+							vibe_pane_id = pane_id
+							break
+						end
+					end
+					if not vibe_pane_id then
+						vim.notify("MeowReview: No tmux pane running vibe", vim.log.levels.ERROR)
+					end
+					local tmp = os.tmpname() .. ".md"
+					local f = io.open(tmp, "w")
+					if not f then
+						vim.notify("MeowReview: could not write temp file", vim.log.levels.ERROR)
+						return
+					end
+					f:write(markdown)
+					f:close()
+					vim.fn.system({
+						"tmux",
+						"send-keys",
+						"-t",
+						vibe_pane_id,
+						"'Act on this review @" .. tmp,
+						"Enter",
+					})
+				end)
+			end,
+			keys = {
+				{ "<leader>ra", "<Plug>(MeowReviewAdd)", mode = { "n", "v" }, desc = "Add Review Comment" },
+				{
+					"<leader>rd",
+					"<Plug>(MeowReviewDelete)",
+					mode = { "n", "v" },
+					desc = "Delete Review Comment",
+				},
+				{ "<leader>re", "<Plug>(MeowReviewEdit)", desc = "Edit Review Comment" },
+				{ "<leader>rv", "<Plug>(MeowReviewView)", desc = "View Review Comment" },
+				{ "<leader>rE", "<Plug>(MeowReviewExport)", desc = "Export Review" },
+				{ "<leader>rX", "<Plug>(MeowReviewExportAndClear)", desc = "Export and Clear" },
+				{ "<leader>rf", "<Plug>(MeowReviewExportFile)", desc = "Export Current File" },
+				{ "<leader>rc", "<Plug>(MeowReviewClear)", desc = "Clear All Comments" },
+				{ "<leader>rg", "<Plug>(MeowReviewGoto)", desc = "Go to Review Comment" },
+				{ "<leader>rG", "<Plug>(MeowReviewGotoFile)", desc = "Go to Comment in File" },
+				{ "<leader>rt", "<Plug>(MeowReviewGotoType)", desc = "Go to Comment by Type" },
+				{ "<leader>rR", "<Plug>(MeowReviewResolve)", desc = "Resolve Comment" },
+				{ "<leader>rA", "<Plug>(MeowReviewResolveAll)", desc = "Resolve All Comments" },
+				{ "<leader>rr", "<Plug>(MeowReviewReload)", desc = "Reload Review" },
+				{ "]r", "<Plug>(MeowReviewNext)", desc = "Next Review Comment" },
+				{ "[r", "<Plug>(MeowReviewPrev)", desc = "Previous Review Comment" },
 			},
 		},
 	},
