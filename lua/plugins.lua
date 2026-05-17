@@ -386,7 +386,7 @@ require("lazy").setup({
 							["default"] = function(selected)
 								local picked = vim.trim(selected[1])
 								vim.api.nvim_put(
-									{ "@prefix " .. picked .. ": <" .. map[picked] .. "> ." },
+									{ "PREFIX " .. picked .. ": <" .. map[picked] .. ">" },
 									"l",
 									true,
 									true
