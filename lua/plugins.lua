@@ -27,7 +27,7 @@ require("lazy").setup({
 		{ "rebelot/kanagawa.nvim" },
 		{ "folke/tokyonight.nvim" },
 		{ "karb94/neoscroll.nvim", opts = { duration_multiplier = 0.4 } },
-		{ "sphamba/smear-cursor.nvim", opts = {} },
+		{ "sphamba/smear-cursor.nvim", opts = { smear_insert_mode = false } },
 		{
 			"shortcuts/no-neck-pain.nvim",
 			opts = {
