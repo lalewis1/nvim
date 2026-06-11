@@ -521,7 +521,7 @@ require("lazy").setup({
 			"sindrets/diffview.nvim",
 			event = "VeryLazy",
 			opts = {
-				use_icons = true,
+				use_icons = false,
 				enhanced_diff_hl = true,
 				keymaps = {
 					view = {
@@ -542,11 +542,6 @@ require("lazy").setup({
 		},
 		-- Markdown Render / Preview
 		-- ##########################################################
-		{
-			"MeanderingProgrammer/render-markdown.nvim",
-			dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" }, -- if you prefer nvim-web-devicons
-			opts = {},
-		},
 		{
 			"brianhuster/live-preview.nvim",
 			ft = { "markdown" },
@@ -614,23 +609,24 @@ require("lazy").setup({
 						{ "a", "<Plug>(MeowReviewAdd)", { desc = "Add Comment" } },
 						{ "d", "<Plug>(MeowReviewDelete)", { desc = "Delete Comment" } },
 						{ "e", "<Plug>(MeowReviewEdit)", { desc = "Edit Comment" } },
-						{ "v", "<Plug>(MeowReviewView)", { desc = "View Comment" } },
-						{ "E", "<Plug>(MeowReviewExport)", { desc = "Export Review" } },
-						{ "X", "<Plug>(MeowReviewExportAndClear)", { desc = "Export & Clear" } },
-						{ "f", "<Plug>(MeowReviewExportFile)", { desc = "Export File" } },
+						{ "v", "<Plug>(MeowReviewGoto)", { desc = "View Comments" } },
 						{ "c", "<Plug>(MeowReviewClear)", { desc = "Clear All" } },
-						{ "g", "<Plug>(MeowReviewGoto)", { desc = "Goto Comment" } },
-						{ "G", "<Plug>(MeowReviewGotoFile)", { desc = "Goto Comment in File" } },
-						{ "t", "<Plug>(MeowReviewGotoType)", { desc = "Goto Comment by Type" } },
-						{ "R", "<Plug>(MeowReviewResolve)", { desc = "Resolve Comment" } },
-						{ "A", "<Plug>(MeowReviewResolveAll)", { desc = "Resolve All" } },
-						{ "r", "<Plug>(MeowReviewReload)", { desc = "Reload Review" } },
 						{ "n", "<Plug>(MeowReviewNext)", { desc = "Next Comment" } },
 						{ "p", "<Plug>(MeowReviewPrevious)", { desc = "Prev Comment" } },
+						{ "X", "<Plug>(MeowReviewExportAndClear)", { desc = "Export & Clear" } },
 						{ "<esc>", nil, { exit = true, desc = "Quit" } },
 					},
 				})
 			end,
+		},
+		-- Grug Far
+		-- ##########################################################
+		{
+			"MagicDuck/grug-far.nvim",
+			opts = {},
+			keys = {
+				{ "<leader>g", ":GrugFar<cr>", { desc = "GrugFar", silent = true } },
+			},
 		},
 	},
 	install = { colorscheme = { "habamax" } },
