@@ -244,159 +244,35 @@ require("lazy").setup({
 				},
 			},
 		},
-		-- FZF-Lua
+		-- Telescope
 		-- ##########################################################
 		{
-			"ibhagwan/fzf-lua",
+			"nvim-telescope/telescope.nvim",
 			event = "VeryLazy",
+			dependencies = {
+				"nvim-lua/plenary.nvim",
+				"nvim-telescope/telescope-ui-select.nvim",
+			},
 			keys = {
-				{ "<a-f>", ":FzfLua files<cr>", { desc = "Find files", silent = true } },
-				{ "<a-F>", ":FzfLua resume<cr>", { desc = "Resume fuzzy find", silent = true } },
-				{ "<a-b>", ":FzfLua builtin<cr>", { desc = "FzF built ins", silent = true } },
-				{ "<leader>fo", ":FzfLua oldfiles<cr>", { desc = "Find old files", silent = true } },
-				{ "<leader>fg", ":FzfLua grep_project<cr>", { desc = "Find grep", silent = true } },
-				{ "<leader>fb", ":FzfLua buffers<cr>", { desc = "Find buffers", silent = true } },
-				{ "<leader>fh", ":FzfLua helptags<cr>", { desc = "Find helptags", silent = true } },
-				{ "<leader>fc", ":FzfLua colorschemes<cr>", { desc = "Find colorschemes", silent = true } },
-				{ "<leader>gb", ":FzfLua git_branches<cr>", { desc = "Find git branches", silent = true } },
-				{ "<leader>gs", ":FzfLua git_status<cr>", { desc = "Git status", silent = true } },
+				{ "<a-f>", ":Telescope find_files<cr>", { desc = "Find files", silent = true } },
+				{ "<a-F>", ":Telescope resume<cr>", { desc = "Resume fuzzy find", silent = true } },
+				{ "<a-b>", ":Telescope builtin<cr>", { desc = "Telescope built ins", silent = true } },
+				{ "<leader>fo", ":Telescope oldfiles<cr>", { desc = "Find old files", silent = true } },
+				{ "<leader>fg", ":Telescope live_grep<cr>", { desc = "Find grep", silent = true } },
+				{ "<leader>fb", ":Telescope buffers<cr>", { desc = "Find buffers", silent = true } },
+				{ "<leader>fh", ":Telescope help_tags<cr>", { desc = "Find helptags", silent = true } },
+				{ "<leader>fc", ":Telescope colorscheme<cr>", { desc = "Find colorschemes", silent = true } },
 			},
 			config = function()
-				local fzf = require("fzf-lua")
-
-				fzf.register_ui_select()
-
-				fzf.setup({ "border-fused" })
-
-				-- Custom Taskfile Picker
-				local taskpicker = function()
-					local json = vim.fn.system("task --list-all --json")
-					if vim.v.shell_error ~= 0 or not json or json == "" then
-						vim.notify(
-							"Failed to get task data (is 'task' installed and Taskfile present?)",
-							vim.log.levels.ERROR
-						)
-						return
-					end
-					local data = vim.fn.json_decode(json)
-					if type(data) ~= "table" or not data.tasks or type(data.tasks) ~= "table" then
-						vim.notify("No tasks found in Taskfile", vim.log.levels.ERROR)
-						return
-					end
-					local items = {}
-					local task_map = {}
-					for _, task in ipairs(data.tasks) do
-						items[#items + 1] = task.name
-						task_map[task.name] = {
-							name = task.name,
-							summary = "task " .. task.name .. " --summary",
-						}
-					end
-					fzf.fzf_exec(items, {
-						prompt = "Run a task> ",
-						preview = function(selected)
-							local picked = vim.trim(selected[1])
-							local task = task_map[picked]
-							if not task then
-								return "(Task not found)"
-							end
-							return vim.fn.system(task.summary)
-						end,
-						actions = {
-							["default"] = function(selected)
-								local picked = selected[1]
-								local task = task_map[picked]
-								if not task then
-									return
-								end
-								vim.cmd("tabnew")
-								vim.cmd("terminal task " .. task.name)
-							end,
+				local telescope = require("telescope")
+				telescope.setup({
+					extensions = {
+						["ui-select"] = {
+							require("telescope.themes").get_dropdown({}),
 						},
-					})
-				end
-				vim.keymap.set("n", "<a-t>", taskpicker, { desc = "Find a task", silent = true })
-
-				-- custom prefix/namespace picker
-				local prefixpicker = function()
-					local function keys(tbl)
-						local keyset = {}
-						for k in pairs(tbl) do
-							table.insert(keyset, k)
-						end
-						return keyset
-					end
-					local map = {
-						["brick"] = "https://brickschema.org/schema/Brick#",
-						["csvw"] = "http://www.w3.org/ns/csvw#",
-						["dc"] = "http://purl.org/dc/elements/1.1/",
-						["dcam"] = "http://purl.org/dc/dcam/",
-						["dcat"] = "http://www.w3.org/ns/dcat#",
-						["dcmitype"] = "http://purl.org/dc/dcmitype/",
-						["dcterms"] = "http://purl.org/dc/terms/",
-						["delta"] = "http://jena.apache.org/rdf-delta#",
-						["doap"] = "http://usefulinc.com/ns/doap#",
-						["ex"] = "http://example.org/",
-						["foaf"] = "http://xmlns.com/foaf/0.1/",
-						["fuseki"] = "http://jena.apache.org/fuseki#",
-						["geo"] = "http://www.opengis.net/ont/geosparql#",
-						["geof"] = "http://www.opengis.net/def/function/geosparql/",
-						["geosparql"] = "http://jena.apache.org/geosparql#",
-						["ja"] = "http://jena.hpl.hp.com/2005/11/Assembler#",
-						["odrl"] = "http://www.w3.org/ns/odrl/2/",
-						["org"] = "http://www.w3.org/ns/org#",
-						["owl"] = "http://www.w3.org/2002/07/owl#",
-						["prefix"] = "http://qudt.org/vocab/prefix/",
-						["prof"] = "http://www.w3.org/ns/dx/prof/",
-						["prov"] = "http://www.w3.org/ns/prov#",
-						["qb"] = "http://purl.org/linked-data/cube#",
-						["qkdv"] = "http://qudt.org/vocab/dimensionvector/",
-						["qlss"] = "https://qlever.cs.uni-freiburg.de/spatialSearch/",
-						["quantitykind"] = "http://qudt.org/vocab/quantitykind/",
-						["qudt"] = "http://qudt.org/schema/qudt/",
-						["rdf"] = "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-						["rdfs"] = "http://www.w3.org/2000/01/rdf-schema#",
-						["rico"] = "https://www.ica.org/standards/RiC/ontology#",
-						["sdo"] = "https://schema.org/",
-						["schema"] = "https://schema.org/",
-						["sh"] = "http://www.w3.org/ns/shacl#",
-						["si-unit"] = "https://si-digital-framework.org/SI/units/",
-						["skos"] = "http://www.w3.org/2004/02/skos/core#",
-						["sosa"] = "http://www.w3.org/ns/sosa/",
-						["sou"] = "http://qudt.org/vocab/sou/",
-						["ssn"] = "http://www.w3.org/ns/ssn/",
-						["tdb2"] = "http://jena.apache.org/2016/tdb#",
-						["text"] = "http://jena.apache.org/text#",
-						["time"] = "http://www.w3.org/2006/time#",
-						["unit"] = "http://qudt.org/vocab/unit/",
-						["vaem"] = "http://www.linkedmodel.org/schema/vaem#",
-						["vann"] = "http://purl.org/vocab/vann/",
-						["voag"] = "http://voag.linkedmodel.org/schema/voag#",
-						["void"] = "http://rdfs.org/ns/void#",
-						["wgs"] = "https://www.w3.org/2003/01/geo/wgs84_pos#",
-						["xml"] = "http://www.w3.org/XML/1998/namespace",
-						["xsd"] = "http://www.w3.org/2001/XMLSchema#",
-					}
-					fzf.fzf_exec(keys(map), {
-						prompt = "Expand prefix> ",
-						preview = function(selected)
-							local picked = vim.trim(selected[1])
-							return map[picked]
-						end,
-						actions = {
-							["default"] = function(selected)
-								local picked = vim.trim(selected[1])
-								vim.api.nvim_put(
-									{ "PREFIX " .. picked .. ": <" .. map[picked] .. ">" },
-									"l",
-									true,
-									true
-								)
-							end,
-						},
-					})
-				end
-				vim.keymap.set({ "n", "v", "i", "x" }, "<a-x>", prefixpicker, { desc = "Find a prefix", silent = true })
+					},
+				})
+				telescope.load_extension("ui-select")
 			end,
 		},
 		-- blink.cmp
@@ -508,7 +384,7 @@ require("lazy").setup({
 			dependencies = {
 				"nvim-lua/plenary.nvim", -- required
 				"sindrets/diffview.nvim", -- optional - Diff integration
-				"ibhagwan/fzf-lua", -- optional
+				"nvim-telescope/telescope.nvim", -- optional
 			},
 			opts = {
 				graph_style = "unicode",
