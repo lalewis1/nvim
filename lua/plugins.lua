@@ -75,7 +75,7 @@ require("lazy").setup({
 							orignal_signcolumn_bg = string.format("#%06x", sc_hl.bg)
 						end
 						if args.data.enabled then
-							vim.api.nvim_set_hl(0, "SignColumn", { bg = "#3a5e3a" }) -- greenish
+							vim.api.nvim_set_hl(0, "SignColumn", { bg = "#4a4433" })
 						else
 							vim.api.nvim_set_hl(0, "SignColumn", { bg = orignal_signcolumn_bg })
 						end
@@ -83,6 +83,7 @@ require("lazy").setup({
 				})
 
 				local dap = require("dap")
+				-- prevent unnecessary buffer switching
 				dap.defaults.fallback.switchbuf = "usevisible,usetab,uselast"
 
 				local dappy = require("dap-python")
@@ -402,15 +403,20 @@ require("lazy").setup({
 		-- ##########################################################
 		{
 			"saghen/blink.cmp",
-			dependencies = { "rafamadriz/friendly-snippets" },
+			dependencies = { "rafamadriz/friendly-snippets", "mayromr/blink-cmp-dap" },
 			event = "VeryLazy",
 			version = "1.*",
 			opts = {
 				keymap = { preset = "super-tab" },
-				cmdline = { enabled = false },
 				completion = { documentation = { auto_show = true } },
 				sources = {
-					default = { "lsp", "path", "snippets", "buffer", "omni", "cmdline" },
+					default = { "dap", "lsp", "path", "snippets", "buffer" },
+					providers = {
+						dap = {
+							module = "blink-cmp-dap",
+							name = "DAP",
+						},
+					},
 				},
 			},
 			opts_extend = { "sources.default" },

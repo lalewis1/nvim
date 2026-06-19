@@ -107,4 +107,4 @@ vim.filetype.add({
 	},
 })
 
-vim.cmd.colorscheme("kanagawa")
+vim.cmd.colorscheme("solarized")
