@@ -631,7 +631,25 @@ require("lazy").setup({
 			"MagicDuck/grug-far.nvim",
 			opts = {},
 			keys = {
-				{ "<leader>g", ":GrugFar<cr>", { desc = "GrugFar", silent = true } },
+				{
+					"<a-g>",
+					function()
+						require("grug-far").open({
+							windowCreationCommand = "belowright vsplit",
+						})
+					end,
+					{ desc = "GrugFar", silent = true },
+				},
+				{
+					mode = "v",
+					"<a-g>",
+					function()
+						require("grug-far").with_visual_selection({
+							windowCreationCommand = "belowright vsplit",
+						})
+					end,
+					{ desc = "GrugFarVisual", silent = true },
+				},
 			},
 		},
 	},
