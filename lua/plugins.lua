@@ -220,6 +220,9 @@ require("lazy").setup({
 			"mistweaverco/kulala.nvim",
 			ft = { "http" },
 			opts = {
+				ui = {
+					display_mode = "float",
+				},
 				contenttypes = {
 					["application/sparql-query"] = {
 						ft = "sparql",
@@ -279,18 +282,25 @@ require("lazy").setup({
 		-- ##########################################################
 		{
 			"saghen/blink.cmp",
-			dependencies = { "rafamadriz/friendly-snippets", "mayromr/blink-cmp-dap" },
+			dependencies = { "rafamadriz/friendly-snippets", "mayromr/blink-cmp-dap", "folke/lazydev.nvim" },
 			event = "VeryLazy",
 			version = "1.*",
 			opts = {
 				keymap = { preset = "super-tab" },
+				cmdline = { enabled = false },
 				completion = { documentation = { auto_show = true } },
 				sources = {
-					default = { "dap", "lsp", "path", "snippets", "buffer" },
+					default = { "dap", "lazydev", "lsp", "path", "snippets", "buffer" },
 					providers = {
 						dap = {
 							module = "blink-cmp-dap",
 							name = "DAP",
+						},
+						lazydev = {
+							name = "LazyDev",
+							module = "lazydev.integrations.blink",
+							-- make lazydev completions top priority (see `:h blink.cmp`)
+							score_offset = 100,
 						},
 					},
 				},
@@ -323,6 +333,11 @@ require("lazy").setup({
 						args = { "--test", "$FILENAME" },
 						stdin = false,
 					},
+					kulala = {
+						command = "kulala-fmt",
+						args = { "fix", "$FILENAME" },
+						stdin = false,
+					},
 				},
 				formatters_by_ft = {
 					python = { "black", "isort" },
@@ -339,6 +354,7 @@ require("lazy").setup({
 					sh = { "shfmt" },
 					turtle = { "kurra" },
 					hurl = { "hurl" },
+					http = { "kulala" },
 				},
 			},
 			keys = {

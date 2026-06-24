@@ -78,23 +78,25 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 
 vim.diagnostic.config({ virtual_text = true })
 vim.lsp.enable({
-	"ansiblels",
 	"bashls",
 	"bicep",
-	"docker_compose_language_service",
-	"dockerls",
-	"emmet_language_server",
-	"gh_actions_ls",
 	"html",
+	"cssls",
+	"eslint",
 	"jsonls",
 	"lua_ls",
-	"marksman",
 	"pylsp",
+	"pyrefly",
 	"sparql",
-	"tailwindcss",
 	"turtle",
+	"vue_ls",
 	"vtsls",
-	"yamlls",
+	"kulala_ls",
+	"systemd_lsp",
+	"just",
+	"gh_actions_ls",
+	"emmet_ls",
+	"docker_compose_language_service",
 })
 
 vim.filetype.add({
