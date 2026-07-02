@@ -86,7 +86,7 @@ vim.lsp.enable({
 	"jsonls",
 	"lua_ls",
 	"pylsp",
-	"pyrefly",
+	-- "pyrefly",
 	"sparql",
 	"turtle",
 	"vue_ls",
