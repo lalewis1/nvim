@@ -12,6 +12,7 @@ vim.opt.cursorline = true
 vim.opt.modeline = false -- because turtle prefixes like ex: cause issues
 vim.opt.signcolumn = "yes"
 vim.opt.expandtab = true
+vim.opt.tabstop = 4
 vim.opt.fillchars:append({ diff = "/" })
 vim.opt.confirm = true
 vim.opt.scrolloff = 1
@@ -87,6 +88,7 @@ vim.lsp.enable({
 	"lua_ls",
 	"pylsp",
 	-- "pyrefly",
+    -- "basedpyright",
 	"sparql",
 	"turtle",
 	"vue_ls",

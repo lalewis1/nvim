@@ -190,30 +190,6 @@ require("lazy").setup({
 				})
 			end,
 		},
-		-- CodeCompanion
-		-- ##########################################################
-		{
-			"olimorris/codecompanion.nvim",
-			config = true,
-			dependencies = {
-				"nvim-lua/plenary.nvim",
-				"nvim-treesitter/nvim-treesitter",
-			},
-			opts = {
-				interactions = {
-					chat = {
-						adapter = "openai",
-					},
-					inline = {
-						adapter = "openai",
-					},
-				},
-			},
-			keys = {
-				{ "<a-c>", ":CodeCompanionChat toggle<cr>", { desc = "Chat Mode (toggle)", silent = true } },
-				{ "<a-c>", "<esc>:CodeCompanion ", mode = "i" },
-			},
-		},
 		-- Kulala
 		-- ##########################################################
 		{
@@ -393,26 +369,6 @@ require("lazy").setup({
 				{ "-", ":Oil<cr>", { desc = "Oil", silent = true } },
 			},
 		},
-		-- Neogit
-		-- ##########################################################
-		{
-			"NeogitOrg/neogit",
-			dependencies = {
-				"nvim-lua/plenary.nvim", -- required
-				"sindrets/diffview.nvim", -- optional - Diff integration
-				"nvim-telescope/telescope.nvim", -- optional
-			},
-			opts = {
-				graph_style = "unicode",
-				process_spinner = true,
-				commit_editor = {
-					show_staged_diff = false,
-				},
-			},
-			keys = {
-				{ "<a-n>", ":Neogit<cr>", { desc = "Neogit", silent = true } },
-			},
-		},
 		-- Diffview
 		-- ##########################################################
 		{
@@ -466,148 +422,11 @@ require("lazy").setup({
 					return tmp
 				end
 
-				local function json_system(args)
-					local output = vim.fn.system(args)
-					if vim.v.shell_error ~= 0 then
-						vim.notify(
-							"MeowReview: command failed: " .. table.concat(args, " ") .. "\n" .. output,
-							vim.log.levels.ERROR
-						)
-						return nil
-					end
-
-					local ok, decoded = pcall(vim.fn.json_decode, output)
-					if not ok then
-						vim.notify("MeowReview: invalid JSON from: " .. table.concat(args, " "), vim.log.levels.ERROR)
-						return nil
-					end
-					return decoded
-				end
-
-				local function foreground_is_vibe(process)
-					if process.name == "vibe" then
-						return true
-					end
-
-					for _, arg in ipairs(process.argv or {}) do
-						if tostring(arg):match("[^/]+$") == "vibe" then
-							return true
-						end
-					end
-
-					return false
-				end
-
 				require("meow.review").setup({
-					default_exporter = "herdr",
+					default_exporter = "custom",
 				})
 
-				require("meow.review").register_exporter("herdr", function(markdown, _root)
-					local workspace_id = vim.env.HERDR_WORKSPACE_ID
-					local current_pane_id = vim.env.HERDR_PANE_ID
-					if not workspace_id or workspace_id == "" or not current_pane_id or current_pane_id == "" then
-						vim.notify("MeowReview: HERDR_WORKSPACE_ID/HERDR_PANE_ID not set", vim.log.levels.ERROR)
-						return
-					end
-
-					local pane_list = json_system({ "herdr", "pane", "list" })
-					if not pane_list then
-						return
-					end
-
-					local target_pane_ids = {}
-					local target_labels = {}
-					local function add_target(pane_id, label)
-						if pane_id and pane_id ~= current_pane_id and not target_pane_ids[pane_id] then
-							table.insert(target_labels, pane_id .. " (" .. label .. ")")
-							target_pane_ids[pane_id] = true
-						end
-					end
-
-					local panes = pane_list.result and pane_list.result.panes or {}
-					for _, pane in ipairs(panes) do
-						if pane.workspace_id == workspace_id and pane.pane_id ~= current_pane_id then
-							local process_result =
-								json_system({ "herdr", "pane", "process-info", "--pane", pane.pane_id })
-							local process_info = process_result
-								and process_result.result
-								and process_result.result.process_info
-							if process_info then
-								for _, process in ipairs(process_info.foreground_processes or {}) do
-									if foreground_is_vibe(process) then
-										add_target(pane.pane_id, "vibe")
-										break
-									end
-								end
-							end
-						end
-					end
-
-					local agent_list = json_system({ "herdr", "agent", "list" })
-					if agent_list then
-						local agents = agent_list.result and agent_list.result.agents or {}
-						for _, agent in ipairs(agents) do
-							if agent.workspace_id == workspace_id and agent.agent == "pi" then
-								add_target(agent.pane_id, "pi")
-							end
-						end
-					end
-
-					if #target_labels == 0 then
-						vim.notify(
-							"MeowReview: No herdr pane running vibe or pi in current workspace",
-							vim.log.levels.ERROR
-						)
-						return
-					end
-
-					local tmp = write_review_tmp(markdown)
-					if not tmp then
-						return
-					end
-
-					local sent = 0
-					for pane_id in pairs(target_pane_ids) do
-						local output =
-							vim.fn.system({ "herdr", "pane", "send-text", pane_id, "Act on this review @" .. tmp })
-						if vim.v.shell_error ~= 0 then
-							vim.notify(
-								"MeowReview: failed sending review text to " .. pane_id .. "\n" .. output,
-								vim.log.levels.ERROR
-							)
-						else
-							output = vim.fn.system({ "herdr", "pane", "send-keys", pane_id, "Enter" })
-							if vim.v.shell_error ~= 0 then
-								vim.notify(
-									"MeowReview: failed pressing enter in " .. pane_id .. "\n" .. output,
-									vim.log.levels.ERROR
-								)
-							else
-								sent = sent + 1
-							end
-						end
-					end
-
-					vim.notify(
-						"MeowReview: sent review to " .. sent .. " herdr pane(s): " .. table.concat(target_labels, ", ")
-					)
-				end)
-
-				require("meow.review").register_exporter("vibetmux", function(markdown, _root)
-					local handle = io.popen("tmux list-panes -F '#{pane_id} #{pane_title}'")
-					local result = handle:read("*a")
-					handle:close()
-					local vibe_pane_id = nil
-					for pane_id, title in result:gmatch("(%S+) (%S+)") do
-						if title:find("Vibe") then
-							vibe_pane_id = pane_id
-							break
-						end
-					end
-					if not vibe_pane_id then
-						vim.notify("MeowReview: No tmux pane running vibe", vim.log.levels.ERROR)
-						return
-					end
+				local function send_review_to_pane(markdown, pane_id)
 					local tmp = write_review_tmp(markdown)
 					if not tmp then
 						return
@@ -616,10 +435,99 @@ require("lazy").setup({
 						"tmux",
 						"send-keys",
 						"-t",
-						vibe_pane_id,
+						pane_id,
 						"Act on this review @" .. tmp,
 						"Enter",
 					})
+					if vim.v.shell_error ~= 0 then
+						vim.notify("MeowReview: failed to send review to tmux pane " .. pane_id, vim.log.levels.ERROR)
+					end
+				end
+
+				local function agent_kind(title, command)
+					title = title:lower()
+					command = command:lower()
+					if command == "pi" or title:find("π", 1, true) or title:find("%f[%w]pi%f[%W]") then
+						return "pi"
+					end
+					if command == "vibe" or title:find("vibe", 1, true) then
+						return "vibe"
+					end
+				end
+
+				local function list_agent_panes()
+					local panes = {}
+					local result = vim.fn.system({
+						"tmux",
+						"list-panes",
+						"-a",
+						"-F",
+						"#{pane_id}\t#{session_name}:#{window_index}.#{pane_index}\t#{pane_title}\t#{pane_current_command}",
+					})
+					if vim.v.shell_error ~= 0 then
+						vim.notify("MeowReview: could not list tmux panes", vim.log.levels.ERROR)
+						return panes
+					end
+					for line in result:gmatch("[^\n]+") do
+						local pane_id, location, title, command = line:match("^([^\t]+)\t([^\t]+)\t([^\t]*)\t([^\t]*)$")
+						if pane_id then
+							local kind = agent_kind(title, command)
+							if kind then
+								table.insert(panes, {
+									pane_id = pane_id,
+									kind = kind,
+									label = string.format(
+										"%s  %s  %s",
+										kind,
+										location,
+										title ~= "" and title or command
+									),
+								})
+							end
+						end
+					end
+					return panes
+				end
+
+				local function create_agent_pane(kind)
+					local pane_id = vim.fn.system({ "tmux", "split-window", "-h", "-P", "-F", "#{pane_id}", kind })
+					if vim.v.shell_error ~= 0 then
+						vim.notify("MeowReview: failed to create " .. kind .. " tmux pane", vim.log.levels.ERROR)
+						return nil
+					end
+					return vim.trim(pane_id)
+				end
+
+				require("meow.review").register_exporter("custom", function(markdown, _root)
+					local panes = list_agent_panes()
+					if #panes == 1 then
+						send_review_to_pane(markdown, panes[1].pane_id)
+					elseif #panes > 1 then
+						vim.ui.select(panes, {
+							prompt = "Send MeowReview to which agent pane?",
+							format_item = function(item)
+								return item.label
+							end,
+						}, function(choice)
+							if choice then
+								send_review_to_pane(markdown, choice.pane_id)
+							end
+						end)
+					else
+						vim.ui.select({ "pi", "vibe" }, {
+							prompt = "No pi/vibe agent pane found. Create new pane?",
+						}, function(kind)
+							if not kind then
+								return
+							end
+							local pane_id = create_agent_pane(kind)
+							if pane_id then
+								vim.defer_fn(function()
+									send_review_to_pane(markdown, pane_id)
+								end, 500)
+							end
+						end)
+					end
 				end)
 
 				-- Add MeowReview hydra
@@ -660,7 +568,7 @@ require("lazy").setup({
 					"<a-g>",
 					function()
 						require("grug-far").open({
-							windowCreationCommand = "belowright vsplit",
+							windowCreationCommand = "tab split",
 						})
 					end,
 					{ desc = "GrugFar", silent = true },
