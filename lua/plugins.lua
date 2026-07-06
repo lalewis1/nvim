@@ -22,7 +22,7 @@ require("lazy").setup({
 		{ "neovim/nvim-lspconfig" },
 		{ "LunarVim/bigfile.nvim" },
 		{ "kylechui/nvim-surround", event = "VeryLazy", opts = {} },
-		{ "maxmx03/solarized.nvim" },
+		{ "craftzdog/solarized-osaka.nvim" },
 		{ "olimorris/onedarkpro.nvim" },
 		{ "rebelot/kanagawa.nvim" },
 		{ "folke/tokyonight.nvim" },

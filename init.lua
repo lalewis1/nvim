@@ -111,4 +111,4 @@ vim.filetype.add({
 	},
 })
 
-vim.cmd.colorscheme("solarized")
+vim.cmd.colorscheme("solarized-osaka")
