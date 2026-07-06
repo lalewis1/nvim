@@ -62,12 +62,28 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
 	end,
 })
 
+local function open_term_tab(program)
+	vim.cmd("tabnew | terminal " .. program)
+    vim.cmd.startinsert()
+	vim.api.nvim_buf_set_keymap(0, "t", "<Esc>", "<Nop>", { noremap = true, silent = true })
+end
 vim.keymap.set("n", "<esc>", ":nohlsearch<cr>", opts)
 vim.keymap.set("t", "<esc>", "<c-\\><c-n>", opts)
 vim.keymap.set("n", "[t", ":tabprevious<cr>", opts)
 vim.keymap.set("n", "]t", ":tabnext<cr>", opts)
 vim.keymap.set("n", "<a-r>", ":belowright 12split | term<cr>i", opts)
-vim.keymap.set("n", "<a-p>", ":tabnew | term python<cr>i", opts)
+vim.keymap.set("n", "<a-p>", function()
+	open_term_tab("python")
+end, opts)
+vim.keymap.set("n", "<a-n>", function()
+	open_term_tab("lazygit")
+end, opts)
+vim.keymap.set("n", "<a-N>", function()
+	open_term_tab("lazydocker")
+end, opts)
+vim.keymap.set("n", "<a-t>", function()
+	open_term_tab("tp")
+end, opts)
 vim.keymap.set("n", "grq", ":lua vim.diagnostic.setqflist()<cr>:copen<cr>", opts)
 
 vim.api.nvim_create_autocmd("TextYankPost", {
@@ -88,7 +104,7 @@ vim.lsp.enable({
 	"lua_ls",
 	"pylsp",
 	-- "pyrefly",
-    -- "basedpyright",
+	-- "basedpyright",
 	"sparql",
 	"turtle",
 	"vue_ls",

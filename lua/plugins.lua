@@ -23,9 +23,7 @@ require("lazy").setup({
 		{ "LunarVim/bigfile.nvim" },
 		{ "kylechui/nvim-surround", event = "VeryLazy", opts = {} },
 		{ "craftzdog/solarized-osaka.nvim" },
-		{ "olimorris/onedarkpro.nvim" },
 		{ "rebelot/kanagawa.nvim" },
-		{ "folke/tokyonight.nvim" },
 		{ "karb94/neoscroll.nvim", opts = { duration_multiplier = 0.4 } },
 		{ "sphamba/smear-cursor.nvim", opts = { smear_insert_mode = false } },
 		{
@@ -266,6 +264,9 @@ require("lazy").setup({
 				cmdline = { enabled = false },
 				completion = { documentation = { auto_show = true } },
 				sources = {
+					per_filetype = {
+						codecompanion = { "codecompanion" },
+					},
 					default = { "dap", "lazydev", "lsp", "path", "snippets", "buffer" },
 					providers = {
 						dap = {
@@ -498,7 +499,7 @@ require("lazy").setup({
 					return vim.trim(pane_id)
 				end
 
-				require("meow.review").register_exporter("custom", function(markdown, _root)
+				require("meow.review").register_exporter("custom", function(markdown, _)
 					local panes = list_agent_panes()
 					if #panes == 1 then
 						send_review_to_pane(markdown, panes[1].pane_id)
@@ -658,6 +659,26 @@ require("lazy").setup({
 					end,
 				})
 			end,
+		},
+		{
+			"olimorris/codecompanion.nvim",
+			version = "^19.0.0",
+			opts = {
+				interactions = {
+					chat = {
+						adapter = {
+							name = "mistral_vibe",
+						},
+					},
+				},
+			},
+			dependencies = {
+				"nvim-lua/plenary.nvim",
+				"nvim-treesitter/nvim-treesitter",
+			},
+			keys = {
+				{ "<a-c>", ":CodeCompanionChat<cr>" },
+			},
 		},
 	},
 	install = { colorscheme = { "habamax" } },
