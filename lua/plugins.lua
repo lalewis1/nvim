@@ -525,7 +525,7 @@ require("lazy").setup({
 							if pane_id then
 								vim.defer_fn(function()
 									send_review_to_pane(markdown, pane_id)
-								end, 500)
+								end, 1500)
 							end
 						end)
 					end
