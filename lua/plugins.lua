@@ -370,6 +370,26 @@ require("lazy").setup({
 				{ "-", ":Oil<cr>", { desc = "Oil", silent = true } },
 			},
 		},
+		-- Neogit
+		-- ##########################################################
+		{
+			"NeogitOrg/neogit",
+			dependencies = {
+				"nvim-lua/plenary.nvim", -- required
+				"sindrets/diffview.nvim", -- optional - Diff integration
+				"nvim-telescope/telescope.nvim", -- optional
+			},
+			opts = {
+				graph_style = "unicode",
+				process_spinner = true,
+				commit_editor = {
+					show_staged_diff = false,
+				},
+			},
+			keys = {
+				{ "<a-n>", ":Neogit<cr>", { desc = "Neogit", silent = true } },
+			},
+		},
 		-- Diffview
 		-- ##########################################################
 		{

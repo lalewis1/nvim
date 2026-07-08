@@ -64,7 +64,7 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
 
 local function open_term_tab(program)
 	vim.cmd("tabnew | terminal " .. program)
-    vim.cmd.startinsert()
+	vim.cmd.startinsert()
 	vim.api.nvim_buf_set_keymap(0, "t", "<Esc>", "<Nop>", { noremap = true, silent = true })
 end
 vim.keymap.set("n", "<esc>", ":nohlsearch<cr>", opts)
@@ -74,9 +74,6 @@ vim.keymap.set("n", "]t", ":tabnext<cr>", opts)
 vim.keymap.set("n", "<a-r>", ":belowright 12split | term<cr>i", opts)
 vim.keymap.set("n", "<a-p>", function()
 	open_term_tab("python")
-end, opts)
-vim.keymap.set("n", "<a-n>", function()
-	open_term_tab("lazygit")
 end, opts)
 vim.keymap.set("n", "<a-N>", function()
 	open_term_tab("lazydocker")
