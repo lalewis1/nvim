@@ -450,9 +450,24 @@ require("lazy").setup({
 					default_exporter = "custom",
 				})
 
-				local function send_review_to_pane(markdown, pane_id)
+				local function current_tmux_pane()
+					local pane_id = vim.fn.system({ "tmux", "display-message", "-p", "#{pane_id}" })
+					if vim.v.shell_error ~= 0 then
+						return nil
+					end
+					return vim.trim(pane_id)
+				end
+
+				local function focus_tmux_pane(pane_id)
+					if pane_id and pane_id ~= "" then
+						vim.fn.system({ "tmux", "select-pane", "-t", pane_id })
+					end
+				end
+
+				local function send_review_to_pane(markdown, pane_id, return_pane_id)
 					local tmp = write_review_tmp(markdown)
 					if not tmp then
+						focus_tmux_pane(return_pane_id)
 						return
 					end
 					vim.fn.system({
@@ -466,6 +481,7 @@ require("lazy").setup({
 					if vim.v.shell_error ~= 0 then
 						vim.notify("MeowReview: failed to send review to tmux pane " .. pane_id, vim.log.levels.ERROR)
 					end
+					focus_tmux_pane(return_pane_id)
 				end
 
 				local function agent_kind(title, command)
@@ -513,19 +529,22 @@ require("lazy").setup({
 					return panes
 				end
 
-				local function create_agent_pane(kind)
+				local function create_agent_pane(kind, return_pane_id)
 					local pane_id = vim.fn.system({ "tmux", "split-window", "-h", "-P", "-F", "#{pane_id}", kind })
 					if vim.v.shell_error ~= 0 then
 						vim.notify("MeowReview: failed to create " .. kind .. " tmux pane", vim.log.levels.ERROR)
+						focus_tmux_pane(return_pane_id)
 						return nil
 					end
+					focus_tmux_pane(return_pane_id)
 					return vim.trim(pane_id)
 				end
 
 				require("meow.review").register_exporter("custom", function(markdown, _)
+					local return_pane_id = current_tmux_pane()
 					local panes = list_agent_panes()
 					if #panes == 1 then
-						send_review_to_pane(markdown, panes[1].pane_id)
+						send_review_to_pane(markdown, panes[1].pane_id, return_pane_id)
 					elseif #panes > 1 then
 						vim.ui.select(panes, {
 							prompt = "Send MeowReview to which agent pane?",
@@ -534,7 +553,9 @@ require("lazy").setup({
 							end,
 						}, function(choice)
 							if choice then
-								send_review_to_pane(markdown, choice.pane_id)
+								send_review_to_pane(markdown, choice.pane_id, return_pane_id)
+							else
+								focus_tmux_pane(return_pane_id)
 							end
 						end)
 					else
@@ -542,12 +563,13 @@ require("lazy").setup({
 							prompt = "No pi/vibe agent pane found. Create new pane?",
 						}, function(kind)
 							if not kind then
+								focus_tmux_pane(return_pane_id)
 								return
 							end
-							local pane_id = create_agent_pane(kind)
+							local pane_id = create_agent_pane(kind, return_pane_id)
 							if pane_id then
 								vim.defer_fn(function()
-									send_review_to_pane(markdown, pane_id)
+									send_review_to_pane(markdown, pane_id, return_pane_id)
 								end, 1500)
 							end
 						end)
