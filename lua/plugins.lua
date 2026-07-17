@@ -376,7 +376,7 @@ require("lazy").setup({
 			"NeogitOrg/neogit",
 			dependencies = {
 				"nvim-lua/plenary.nvim", -- required
-				"sindrets/diffview.nvim", -- optional - Diff integration
+				"dlyongemallo/diffview-plus.nvim", -- optional - Diff integration
 				"nvim-telescope/telescope.nvim", -- optional
 			},
 			opts = {
@@ -393,11 +393,14 @@ require("lazy").setup({
 		-- Diffview
 		-- ##########################################################
 		{
-			"sindrets/diffview.nvim",
+			"dlyongemallo/diffview-plus.nvim",
 			event = "VeryLazy",
 			opts = {
 				use_icons = false,
 				enhanced_diff_hl = true,
+				view = {
+					default = { layout = "diff1_inline" },
+				},
 				keymaps = {
 					view = {
 						{ "n", "q", ":tabclose<cr>", { silent = true } },
@@ -697,7 +700,7 @@ require("lazy").setup({
 				"nvim-treesitter/nvim-treesitter",
 			},
 			keys = {
-				{ "<a-c>", ":CodeCompanionChat<cr>" },
+				{ "<a-c>", ":CodeCompanionChat toggle<cr>" },
 			},
 		},
 	},
