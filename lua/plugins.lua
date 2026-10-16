@@ -465,26 +465,32 @@ require("lazy").setup({
 					end
 				end
 
-				local function list_agent_panes()
+				local function list_agent_panes(current_pane_id)
 					local panes = {}
+					local current_window_id
 					local result = vim.fn.system({
 						"tmux",
 						"list-panes",
 						"-a",
 						"-F",
-						"#{pane_id}\t#{session_name}:#{window_index}.#{pane_index}\t#{pane_title}\t#{pane_current_command}",
+						"#{pane_id}\t#{window_id}\t#{session_name}:#{window_index}.#{pane_index}\t#{pane_title}\t#{pane_current_command}",
 					})
 					if vim.v.shell_error ~= 0 then
 						vim.notify("MeowReview: could not list tmux panes", vim.log.levels.ERROR)
 						return panes
 					end
 					for line in result:gmatch("[^\n]+") do
-						local pane_id, location, title, command = line:match("^([^\t]+)\t([^\t]+)\t([^\t]*)\t([^\t]*)$")
+						local pane_id, window_id, location, title, command =
+							line:match("^([^\t]+)\t([^\t]+)\t([^\t]+)\t([^\t]*)\t([^\t]*)$")
+						if pane_id == current_pane_id then
+							current_window_id = window_id
+						end
 						if pane_id then
 							local kind = agent_kind(title, command)
 							if kind then
 								table.insert(panes, {
 									pane_id = pane_id,
+									window_id = window_id,
 									kind = kind,
 									label = string.format(
 										"%s  %s  %s",
@@ -496,11 +502,21 @@ require("lazy").setup({
 							end
 						end
 					end
-					return panes
+					return panes, current_window_id
 				end
 
 				local function create_agent_pane(kind, return_pane_id)
-					local pane_id = vim.fn.system({ "tmux", "split-window", "-h", "-P", "-F", "#{pane_id}", kind })
+					local pane_id = vim.fn.system({
+						"tmux",
+						"split-window",
+						"-t",
+						return_pane_id,
+						"-h",
+						"-P",
+						"-F",
+						"#{pane_id}",
+						kind,
+					})
 					if vim.v.shell_error ~= 0 then
 						vim.notify("MeowReview: failed to create " .. kind .. " tmux pane", vim.log.levels.ERROR)
 						focus_tmux_pane(return_pane_id)
@@ -512,38 +528,46 @@ require("lazy").setup({
 
 				require("meow.review").register_exporter("custom", function(markdown, _)
 					local return_pane_id = current_tmux_pane()
-					local panes = list_agent_panes()
-					if #panes == 1 then
-						send_review_to_pane(markdown, panes[1].pane_id, return_pane_id)
-					elseif #panes > 1 then
-						vim.ui.select(panes, {
-							prompt = "Send MeowReview to which agent pane?",
-							format_item = function(item)
-								return item.label
-							end,
-						}, function(choice)
-							if choice then
-								send_review_to_pane(markdown, choice.pane_id, return_pane_id)
-							else
-								focus_tmux_pane(return_pane_id)
-							end
-						end)
-					else
-						vim.ui.select({ "pi", "vibe", "claude" }, {
-							prompt = "No pi/vibe/claude agent pane found. Create new pane?",
-						}, function(kind)
-							if not kind then
-								focus_tmux_pane(return_pane_id)
-								return
-							end
-							local pane_id = create_agent_pane(kind, return_pane_id)
-							if pane_id then
-								vim.defer_fn(function()
-									send_review_to_pane(markdown, pane_id, return_pane_id)
-								end, 1500)
-							end
-						end)
+					if not return_pane_id then
+						return
 					end
+					local panes, current_window_id = list_agent_panes(return_pane_id)
+					local local_panes = vim.tbl_filter(function(pane)
+						return pane.window_id == current_window_id
+					end, panes)
+					if #local_panes == 1 then
+						send_review_to_pane(markdown, local_panes[1].pane_id, return_pane_id)
+						return
+					end
+
+					table.insert(panes, { label = "Create new agent pane in current window" })
+					vim.ui.select(panes, {
+						prompt = "Send MeowReview to an agent or create a new pane?",
+						format_item = function(item)
+							return item.label
+						end,
+					}, function(choice)
+						if not choice then
+							focus_tmux_pane(return_pane_id)
+						elseif choice.pane_id then
+							send_review_to_pane(markdown, choice.pane_id, return_pane_id)
+						else
+							vim.ui.select({ "pi", "vibe", "claude" }, {
+								prompt = "Create which agent in the current window?",
+							}, function(kind)
+								if not kind then
+									focus_tmux_pane(return_pane_id)
+									return
+								end
+								local pane_id = create_agent_pane(kind, return_pane_id)
+								if pane_id then
+									vim.defer_fn(function()
+										send_review_to_pane(markdown, pane_id, return_pane_id)
+									end, 1500)
+								end
+							end)
+						end
+					end)
 				end)
 
 				-- Add MeowReview hydra
