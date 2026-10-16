@@ -460,6 +460,9 @@ require("lazy").setup({
 					if command == "vibe" or title:find("vibe", 1, true) then
 						return "vibe"
 					end
+					if command == "claude" or title:find("%f[%w]claude%f[%W]") then
+						return "claude"
+					end
 				end
 
 				local function list_agent_panes()
@@ -526,8 +529,8 @@ require("lazy").setup({
 							end
 						end)
 					else
-						vim.ui.select({ "pi", "vibe" }, {
-							prompt = "No pi/vibe agent pane found. Create new pane?",
+						vim.ui.select({ "pi", "vibe", "claude" }, {
+							prompt = "No pi/vibe/claude agent pane found. Create new pane?",
 						}, function(kind)
 							if not kind then
 								focus_tmux_pane(return_pane_id)
