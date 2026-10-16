@@ -188,39 +188,6 @@ require("lazy").setup({
 				})
 			end,
 		},
-		-- Kulala
-		-- ##########################################################
-		{
-			"mistweaverco/kulala.nvim",
-			ft = { "http" },
-			opts = {
-				ui = {
-					display_mode = "float",
-				},
-				contenttypes = {
-					["application/sparql-query"] = {
-						ft = "sparql",
-					},
-					["application/sparql-results+json"] = {
-						ft = "json",
-						formatter = vim.fn.executable("jq") == 1 and { "jq", "." },
-					},
-					["application/ld+json"] = {
-						ft = "json",
-						formatter = vim.fn.executable("jq") == 1 and { "jq", "." },
-					},
-					["text/turtle"] = {
-						ft = "turtle",
-					},
-					["text/anot+turtle"] = {
-						ft = "turtle",
-					},
-					["text/csv"] = {
-						ft = "csv",
-					},
-				},
-			},
-		},
 		-- Telescope
 		-- ##########################################################
 		{
